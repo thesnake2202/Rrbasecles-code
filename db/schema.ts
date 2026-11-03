@@ -14,8 +14,9 @@ export const rankingSnapshots = pgTable(
   (t) => [primaryKey({ columns: [t.licence, t.day] })],
 );
 
-// Seuils estimés des classements lettres : pour chaque relevé, la dernière position (classement numérique
-// sans les inactifs) couverte par chaque classement, d'après le nombre de joueurs actifs qui le détiennent.
+// Paliers des classements lettres : pour chaque relevé, la dernière position (classement numérique sans les
+// inactifs) couverte par chaque classement d'après le tableau d'équivalence officiel AFTT 2026-2027, les points
+// du joueur situé à cette position et le nombre total de joueurs actifs utilisé pour choisir la tranche.
 export const classLimits = pgTable(
   "class_limits",
   {
@@ -24,6 +25,8 @@ export const classLimits = pgTable(
     ord: integer().notNull(),
     players: integer().notNull(),
     lastPosition: integer("last_position").notNull(),
+    points: real(),
+    actives: integer(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.day, t.cat] })],

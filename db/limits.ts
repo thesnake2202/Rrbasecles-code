@@ -1,9 +1,9 @@
-// Seuils estimés des classements lettres (A, B0 … NC) à partir du classement numérique mixte AFTT.
-// Principe : il y a autant de places pour un classement que de joueurs actifs qui le détiennent
-// actuellement. En prenant les joueurs dans l'ordre du classement numérique, les N premiers
-// correspondent à « A », les suivants à « B0 », etc. La position d'un joueur indique ainsi le
-// classement vers lequel il se dirige.
-import { desc, eq, sql } from "drizzle-orm";
+// Paliers des classements lettres (A, B0 … E6) d'après le tableau d'équivalence officiel AFTT 2026-2027.
+// Le tableau donne, selon le nombre total de joueurs actifs (tranches de 500), la dernière place du classement
+// numérique (sans les inactifs) qui correspond à chaque classement : les 20 premiers sont « A », jusqu'à la 75e
+// « B0 », etc. On relève aussi les points du joueur situé à chaque palier, pour savoir combien de points il faut
+// gagner (ou combien on peut en perdre) pour changer de classement.
+import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { db } from "./index.js";
 import { classLimits } from "./schema.js";
 import { today } from "./snapshots.js";
@@ -17,9 +17,32 @@ export const letter = (s = "") => {
   return t.startsWith("A") ? "A" : ORDER.includes(t) ? t : "";
 };
 
+// Tableau d'équivalence Messieurs 2026-2027 (nombre d'actifs à partir de E6). Colonne k = tranche
+// de 11 750 + 500·k à 12 249 + 500·k joueurs actifs.
+export const TABLE: Record<string, number[]> = {
+  A: Array(17).fill(20),
+  B0: Array(17).fill(75),
+  B2: [205, 210, 220, 225, 230, 235, 240, 245, 250, 255, 260, 270, 275, 280, 285, 290, 295],
+  B4: [405, 420, 435, 450, 460, 475, 490, 505, 520, 530, 545, 560, 575, 585, 600, 615, 630],
+  B6: [820, 855, 885, 915, 945, 980, 1010, 1040, 1075, 1105, 1135, 1165, 1200, 1230, 1260, 1290, 1325],
+  C0: [1275, 1325, 1375, 1425, 1475, 1525, 1575, 1625, 1675, 1725, 1775, 1825, 1875, 1925, 1975, 2025, 2080],
+  C2: [1855, 1930, 2005, 2080, 2155, 2230, 2305, 2380, 2455, 2530, 2605, 2680, 2755, 2830, 2905, 2975, 3050],
+  C4: [2575, 2680, 2785, 2890, 2995, 3100, 3205, 3310, 3415, 3520, 3625, 3730, 3835, 3940, 4045, 4150, 4255],
+  C6: [3335, 3470, 3610, 3745, 3880, 4020, 4155, 4290, 4430, 4565, 4700, 4840, 4975, 5110, 5250, 5385, 5520],
+  D0: [4120, 4285, 4455, 4625, 4795, 4965, 5135, 5305, 5475, 5645, 5815, 5985, 6150, 6320, 6490, 6660, 6830],
+  D2: [4925, 5130, 5330, 5535, 5740, 5940, 6145, 6350, 6550, 6755, 6960, 7160, 7365, 7570, 7770, 7975, 8180],
+  D4: [5810, 6050, 6295, 6535, 6775, 7015, 7255, 7495, 7735, 7975, 8215, 8460, 8700, 8940, 9180, 9420, 9660],
+  D6: [6745, 7025, 7305, 7585, 7865, 8145, 8425, 8705, 8985, 9265, 9545, 9825, 10105, 10385, 10665, 10945, 11220],
+  E0: [7720, 8040, 8365, 8685, 9005, 9325, 9645, 9965, 10285, 10605, 10925, 11250, 11570, 11890, 12210, 12530, 12850],
+  E2: [8745, 9110, 9470, 9835, 10200, 10560, 10925, 11290, 11650, 12015, 12380, 12740, 13105, 13470, 13835, 14195, 14560],
+  E4: [10080, 10500, 10915, 11335, 11755, 12175, 12595, 13015, 13435, 13855, 14275, 14690, 15110, 15530, 15950, 16370, 16790],
+  E6: [12000, 12500, 13000, 13500, 14000, 14500, 15000, 15500, 16000, 16500, 17000, 17500, 18000, 18500, 19000, 19500, 20000],
+};
+export const column = (actives: number) => Math.min(16, Math.max(0, Math.floor((actives - 11750) / 500)));
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-type Row = { position: number; cat: string };
+type Row = { position: number; cat: string; points: number };
 
 async function page(n: number): Promise<{ rows: Row[]; pages: number }> {
   let err: unknown;
@@ -40,6 +63,7 @@ async function page(n: number): Promise<{ rows: Row[]; pages: number }> {
       const rows = [...part.matchAll(/<tr class="ranking-row"[\s\S]*?<\/tr>/g)].map((m) => ({
         position: Number(((m[0].match(/rank-pill">([^<]*)/) || [])[1] || "").replace(/\D/g, "")) || 0,
         cat: letter((m[0].match(/ranking-badge">([^<]*)/) || [])[1] || ""),
+        points: Number(((m[0].match(/points-cell">([^<]*)/) || [])[1] || "").replace(/[^\d,.-]/g, "").replace(",", ".")) || 0,
       }));
       return { rows, pages };
     } catch (e) {
@@ -49,7 +73,7 @@ async function page(n: number): Promise<{ rows: Row[]; pages: number }> {
   throw err;
 }
 
-// Parcourt tout le classement mixte et calcule la dernière position de chaque classement lettre.
+// Parcourt tout le classement mixte, compte les joueurs actifs et applique le tableau d'équivalence.
 export async function computeLimits() {
   const first = await page(1);
   if (!first.pages || !first.rows.length) throw new Error("Classement AFTT vide");
@@ -59,15 +83,20 @@ export async function computeLimits() {
     await sleep(400);
     all.push((await page(n)).rows);
   }
-  const rows = all.flat().filter((r) => r.position > 0 && r.cat);
-  const positions = rows.map((r) => r.position).sort((a, b) => a - b);
-  const count = new Map<string, number>();
-  for (const r of rows) count.set(r.cat, (count.get(r.cat) || 0) + 1);
-  let cum = 0;
-  return ORDER.filter((c) => count.get(c)).map((cat) => {
-    const players = count.get(cat)!;
-    cum += players;
-    return { cat, ord: ORDER.indexOf(cat), players, lastPosition: positions[cum - 1] };
+  const rows = all
+    .flat()
+    .filter((r) => r.position > 0)
+    .sort((a, b) => a.position - b.position);
+  const actives = rows.length;
+  const k = column(actives);
+  let prev = 0;
+  return Object.entries(TABLE).map(([cat, cols]) => {
+    const lastPosition = cols[k];
+    // Points du dernier joueur à l'intérieur du palier (null si le palier dépasse le nombre d'actifs).
+    const at = lastPosition <= rows[rows.length - 1].position ? rows.filter((r) => r.position <= lastPosition).at(-1) : undefined;
+    const players = lastPosition - prev;
+    prev = lastPosition;
+    return { cat, ord: ORDER.indexOf(cat), players, lastPosition, points: at ? at.points : null, actives };
   });
 }
 
@@ -79,19 +108,32 @@ export async function refreshLimits() {
     .values(limits.map((l) => ({ ...l, day })))
     .onConflictDoUpdate({
       target: [classLimits.day, classLimits.cat],
-      set: { ord: sql`excluded.ord`, players: sql`excluded.players`, lastPosition: sql`excluded.last_position`, updatedAt: sql`now()` },
+      set: {
+        ord: sql`excluded.ord`,
+        players: sql`excluded.players`,
+        lastPosition: sql`excluded.last_position`,
+        points: sql`excluded.points`,
+        actives: sql`excluded.actives`,
+        updatedAt: sql`now()`,
+      },
     });
   return limits;
 }
 
-// Derniers seuils calculés (ou [] s'il n'y en a pas encore).
+// Derniers paliers calculés avec le tableau officiel (ou [] s'il n'y en a pas encore).
 export async function latestLimits() {
-  const [last] = await db.select({ day: classLimits.day }).from(classLimits).orderBy(desc(classLimits.day)).limit(1);
-  if (!last) return { day: "", limits: [] as { cat: string; players: number; lastPosition: number }[] };
-  const rows = await db
-    .select({ cat: classLimits.cat, players: classLimits.players, lastPosition: classLimits.lastPosition })
+  const [last] = await db
+    .select({ day: classLimits.day, actives: classLimits.actives })
     .from(classLimits)
-    .where(eq(classLimits.day, last.day))
+    .where(isNotNull(classLimits.actives))
+    .orderBy(desc(classLimits.day))
+    .limit(1);
+  type Limit = { cat: string; players: number; lastPosition: number; points: number | null };
+  if (!last) return { day: "", actives: 0, limits: [] as Limit[] };
+  const rows: Limit[] = await db
+    .select({ cat: classLimits.cat, players: classLimits.players, lastPosition: classLimits.lastPosition, points: classLimits.points })
+    .from(classLimits)
+    .where(and(eq(classLimits.day, last.day), isNotNull(classLimits.actives)))
     .orderBy(classLimits.ord);
-  return { day: String(last.day), limits: rows };
+  return { day: String(last.day), actives: last.actives || 0, limits: rows };
 }
