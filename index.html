@@ -46,6 +46,9 @@ table.rt{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fix
 .pf h2{margin:0 0 2px;font-size:22px}.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}.kp div{background:var(--card);border-radius:8px;padding:8px}.kp span{display:block;font-size:11px;color:var(--mu);text-transform:uppercase}.kp b{font-size:16px}
 .chart{background:var(--card);border-radius:8px;padding:10px 6px 4px}.chart svg{display:block;width:100%;height:auto}.chart text{fill:var(--mu);font-size:11px}.chart .gl{stroke:var(--alt);stroke-width:1}.chart .ln{fill:none;stroke:#e03030;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}.chart .dt{fill:var(--card);stroke:#e03030;stroke-width:2}.chart .lv{fill:var(--gold);font-weight:800;font-size:12px}
 .day{background:var(--card);border-radius:8px;margin-bottom:8px;overflow:hidden}.day h4{margin:0;padding:8px 10px;background:var(--alt);font-size:13px;display:flex;justify-content:space-between;gap:8px}.day .m{display:flex;gap:8px;align-items:center;padding:7px 10px;border-top:1px solid var(--alt);font-size:14px}.day .m span:first-child{flex:1}.day .m b{min-width:40px;text-align:center}.day .m .d{min-width:64px;text-align:right;font-weight:700}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.charts h3{margin-top:14px}.chart .ln.b{stroke:#5b7cff}.chart .dt.b{stroke:#5b7cff}.chart .lv.b{fill:#8ea2ff}
+.rs{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:10px 8px 6px;border-top:1px solid var(--alt);margin-top:6px}.rs span{display:block;font-size:11px;color:var(--mu);text-transform:uppercase}.rs b{font-size:17px}.rs .r{text-align:right}.cb{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:6px;background:#5b7cff;color:#fff;font-size:12px;vertical-align:2px}.chart .nt{font-size:12px;color:var(--mu);padding:0 8px 6px}
+@media (max-width:640px){.charts{grid-template-columns:1fr}}
 @media (max-width:420px){.kp{grid-template-columns:repeat(2,1fr)}}
 </style></head><body>
 <header><h1>H297</h1><b>Royal Raquette Rouge Basècles</b><small>Tennis de table · saison 2026-2027</small></header>
@@ -147,6 +150,26 @@ ${tk.map(t=>`<line class="gl" x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}"/><
 <polygon fill="url(#ga)" points="${X(0)},${Ht-B} ${pts.join(" ")} ${X(H.length-1)},${Ht-B}"/><polyline class="ln" points="${pts.join(" ")}"/>
 ${H.map((x,i)=>`<circle class="dt" cx="${X(i)}" cy="${Y(x.points)}" r="4"><title>${i==0?"Points de base":new Date(x.date+"T12:00:00").toLocaleDateString("fr-BE",{day:"2-digit",month:"long",year:"numeric"})} : ${f2(x.points)} pts</title></circle>${i%step==0||i==H.length-1?`<text x="${X(i)}" y="${Ht-8}" text-anchor="${i==0?"start":i==H.length-1?"end":"middle"}">${lab(x,i)}</text>`:""}`).join("")}
 <text class="lv" x="${X(H.length-1)}" y="${Y(v[v.length-1])-10}" text-anchor="end">${f2(v[v.length-1])}</text></svg></div>`}
+// Graphique d'évolution de la position au classement numérique (1 = meilleur, en haut).
+const n0=n=>n.toLocaleString("fr-BE");
+function rchart(R){if(!R.length)return `<div class="chart"><p class="sub" style="text-align:center;padding:30px 12px">Pas encore de position au classement numérique (actif à partir de 10 matchs).</p></div>`;
+const W=600,Ht=230,L=56,R0=16,T=22,B=28,t=R.map(x=>Date.parse(x.date+"T12:00:00")),v=R.map(x=>x.position);
+let lo=Math.min(...v),hi=Math.max(...v);if(hi-lo<20){const c=(hi+lo)/2;lo=c-10;hi=c+10}const pd=(hi-lo)*.12;lo=Math.max(1,lo-pd);hi+=pd;
+const t0=t[0],t1=Math.max(t[t.length-1],t0+864e5),X=i=>R.length<2?(L+W-R0)/2:L+(W-L-R0)*(t[i]-t0)/(t1-t0),Y=y=>T+(Ht-T-B)*(y-lo)/(hi-lo);
+const tk=Array.from({length:4},(_,i)=>lo+(hi-lo)*i/3),pts=R.map((x,i)=>X(i).toFixed(1)+","+Y(x.position).toFixed(1));
+const fd=(d,o)=>new Date(d+"T12:00:00").toLocaleDateString("fr-BE",o),sd={day:"2-digit",month:"2-digit",year:"2-digit"};
+const lab=R.length<2?[0]:[0,...(R.length>2?[Math.floor((R.length-1)/2)]:[]),R.length-1];
+const cur=v[v.length-1],prev=v.length>1?v[v.length-2]:null,dv=prev==null?0:prev-cur,c=R[R.length-1].cat;
+const vs=prev==null?`<span class="eq">–</span>`:dv>0?`<span class="up">▲ ${n0(dv)}</span>`:dv<0?`<span class="dn">▼ ${n0(-dv)}</span>`:`<span class="eq">= 0</span>`;
+return `<div class="chart"><svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Évolution de la position au classement"><defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b7cff" stop-opacity=".35"/><stop offset="1" stop-color="#5b7cff" stop-opacity="0"/></linearGradient></defs>
+${tk.map(y=>`<line class="gl" x1="${L}" x2="${W-R0}" y1="${Y(y)}" y2="${Y(y)}"/><text x="${L-6}" y="${Y(y)+4}" text-anchor="end">${n0(Math.round(y))}</text>`).join("")}
+${R.length>1?`<polygon fill="url(#gb)" points="${X(0)},${Ht-B} ${pts.join(" ")} ${X(R.length-1)},${Ht-B}"/><polyline class="ln b" points="${pts.join(" ")}"/>`:""}
+${R.map((x,i)=>`<circle class="dt b" cx="${X(i)}" cy="${Y(x.position)}" r="${R.length>40?2.5:4}"><title>${fd(x.date,{day:"2-digit",month:"long",year:"numeric"})} : ${n0(x.position)}e${x.cat?" ("+esc(x.cat)+")":""}</title></circle>`).join("")}
+${lab.map(i=>`<text x="${X(i)}" y="${Ht-8}" text-anchor="${R.length<2?"middle":i==0?"start":i==R.length-1?"end":"middle"}">${fd(R[i].date,sd)}</text>`).join("")}
+<text class="lv b" x="${X(R.length-1)}" y="${Y(cur)-10}" text-anchor="${R.length<2?"middle":"end"}">${n0(cur)}e</text></svg>
+<div class="rs"><div><span>Classement actuel</span><b style="color:#8ea2ff">${n0(cur)}</b>${c?`<span class="cb" style="display:inline-block">${esc(c)}</span>`:""}</div><div class="r"><span>vs précédent</span><b>${vs}</b></div>
+<div><span>Meilleur classement</span><b>${n0(Math.min(...v))}</b></div><div class="r"><span>Pire classement</span><b>${n0(Math.max(...v))}</b></div></div>
+${R.length<2?`<p class="nt">L'historique se construit automatiquement : la position est relevée chaque jour.</p>`:""}</div>`}
 const dl=n=>n>0?`<span class="up">+${f2(n)}</span>`:n<0?`<span class="dn">${f2(n)}</span>`:`<span class="eq">0</span>`;
 function fiche(){const p=(PL.players||[]).find(x=>x.licence==sel)||{name:"",licence:sel},f=PF[sel]||{loading:1};
 let h=`<div class="pf"><button class="bk" onclick="closeP()">◀ Classement</button><h2>${esc(p.name||f.name)}</h2><span class="sub">${p.cat?esc(p.cat)+" · ":""}Licence ${esc(sel)}${p.rank?" · n° "+p.rank+" du classement":""}</span>`;
@@ -154,10 +177,10 @@ if(f.loading)return h+`<p class="sub">Chargement de la fiche AFTT…</p></div>`;
 if(f.error)return h+`<p class="sub">${esc(f.error)} <button onclick="delete PF['${esc(sel)}'];openP('${esc(sel)}')">Réessayer</button></p></div>`;
 const H=f.history||[],v=H.map(x=>x.points),cur=v.length?v[v.length-1]:p.points||0,e=v.length?cur-v[0]:0;
 h+=`<div class="kp"><div><span>Actuel</span><b class="pt">${f2(cur)}</b></div><div><span>Évolution</span><b>${dl(e)}</b></div><div><span>Plus haut</span><b>${v.length?f2(Math.max(...v)):"–"}</b></div><div><span>Plus bas</span><b>${v.length?f2(Math.min(...v)):"–"}</b></div></div>`;
-h+=`<h3>Évolution des points</h3>`+chart(H);
+h+=`<div class="charts"><div><h3>Évolution des points</h3>${chart(H)}</div><div><h3>Évolution du classement</h3>${rchart(f.ranks||[])}</div></div>`;
 const D2=f.days||[];
 if(D2.length)h+=`<h3>Matchs de la saison</h3>`+D2.map(d=>`<div class="day"><h4><span>${esc(d.date)} · ${esc(d.club)}</span>${dl(d.total)}</h4>${d.matches.map(m=>`<div class="m"><span>${esc(m.opponent)}<br><span class="sub">${esc(m.ranking)}${m.opponentPoints?" · "+f2(m.opponentPoints)+" pts":""}${m.women?" · Dames":""}</span></span><b>${esc(m.score)}</b><span class="d">${dl(m.delta)}</span></div>`).join("")}</div>`).join("");
 else h+=`<p class="sub">Aucun match enregistré cette saison.</p>`;
-return h+`<p class="warn">Données officielles AFTT, mises à jour automatiquement. Les points d'un mois sont comptabilisés le 1er du mois suivant. <a href="${esc(f.url)}" target="_blank" rel="noopener" style="color:var(--gold)">Voir la fiche sur data.aftt.be ↗</a></p></div>`}
+return h+`<p class="warn">Données officielles AFTT, mises à jour automatiquement. Les points d'un mois sont comptabilisés le 1er du mois suivant. Le classement = position au classement numérique AFTT sans les inactifs (1 = meilleur), relevée automatiquement chaque jour. <a href="${esc(f.url)}" target="_blank" rel="noopener" style="color:var(--gold)">Voir la fiche sur data.aftt.be ↗</a></p></div>`}
 draw();
 </script></body></html>

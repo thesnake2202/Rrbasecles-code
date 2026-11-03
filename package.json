@@ -1,0 +1,14 @@
+{
+  "name": "rrr-basecles",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@netlify/database": "^2.0.1",
+    "drizzle-orm": "^1.0.0-beta.22"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^6.0.3",
+    "drizzle-kit": "^1.0.0-beta.22"
+  },
+  "private": true
+}
