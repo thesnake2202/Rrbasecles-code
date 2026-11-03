@@ -45,136 +45,12 @@ table.rt{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fix
 <header><h1>H297</h1><b>Royal Raquette Rouge Basècles</b><small>Tennis de table · saison 2026-2027</small></header>
 <nav id="nav"></nav><main id="m"></main>
 <script>
-const P=[["Noa Sanna",0,0,1742.45,0],["Julien Druart",19,46.6,1234.31,2796],["Guillaume Sanna",8,37.2,1185.52,0],["Thomas Vanwerte",0,0,1170,0],["Philippe Riviere",7,33.2,1155.41,0],["Christophe Sauvage",0,0,1110.2,0],["Lukas Druart",0,0,1100.59,0],["Ryan Baudoin",19,99.2,1090.84,3764],["Gildo Virgilio",14,47.4,1073.8,3887],["Sebastien Schlossmacher",38,133.12,1033.9,4179],["Louis Schoovaerts",24,69.8,1015.78,4316],["Jerome Vandeputte",30,54.23,943.01,4902],["Sylvain Laurent",17,205.2,935.2,4982],["Kevin Clais",18,20.1,918.56,5131],["Christian Hermans",15,-42.3,903.71,5266],["Walter Laurent",36,-45.62,903.33,5270],["Giovanni Persichillo",27,-81.53,894.65,5338],["Christian Vandeputte",12,1.6,885.93,5414],["Fabio Virgilio",12,-44.8,765.38,6503],["Valentino Virgilio",24,95.6,735.45,6765],["Daniel Gosselin",30,-78.47,659.78,7438],["Noah Caufriez",24,117.2,616.61,7842],["Alex Buffe",12,61.2,590.48,8055],["Richard Roucour",24,-38.6,555.81,8373],["Alain Medina",0,0,478.55,0],["Antonin Druart",16,-48.8,437.25,9438],["Baptiste Goovers",12,-6.4,423.57,9555],["Maxence Mahieu",16,0.6,422.14,9572],["Bernard Ducrotois",19,2.6,401.32,9751],["Sarah Debauve",7,37.2,394.4,0],["Eric Mereau",12,-16.4,363.6,10160],["Leonie Schoovaerts",19,93.2,345.9,10332],["Gael Betermier",0,0,323.11,0],["Lucie Schoovaerts",20,-3.2,142.15,12172],["Amelie Lenglez",12,-16.8,138.05,12220],["Louis Clin",0,0,92.74,0],["Vinziane Bruyere",6,-6.4,43.6,0],["Fanny Mahieu",10,-7.2,42.8,13236]];
 const D="19/09 26/09 03/10 10/10 17/10 31/10 07/11 14/11 28/11 05/12 12/12 16/01 23/01 30/01 13/02 20/02 06/03 13/03 27/03 10/04 17/04 24/04".split(" ");
-const B0="R.R. Basècles A";const M=[["Neufvilles Senn…",B0,"","","5-5"],[B0,"Don Bosco C","","","6-4"],["Saint-Piat A",B0,"","","2-8"],[B0,"Palette Huissig…","","","9-1"],[B0,"Braine A","","","10-0"],["Allain A",B0,"","","7-3"],[B0,"Gpv Ath A","","","8-2"],["Papignies A",B0,"05/11","19:30",""],[B0,"Hyon - Cuesme…","12/11","19:30",""],[B0,"Rppc Pecq A","19/11","19:30",""],["Dynamic Flenu B",B0,"26/11","19:00",""],["Gpv Ath A",B0,"14/01","19:30",""],[B0,"Allain A","21/01","19:30",""],["Braine A",B0,"28/01","20:00",""],["Palette Huissig…",B0,"03/02","19:00",""],[B0,"Saint-Piat A","11/02","19:30",""],["Don Bosco C",B0,"17/02","20:00",""],[B0,"Neufvilles Senn…","04/03","19:30",""],[B0,"Papignies A","11/03","19:30",""],["Hyon - Cuesme…",B0,"17/03","20:00",""],["Rppc Pecq A",B0,"25/03","19:00",""],[B0,"Dynamic Flenu B","01/04","19:30",""]];
-const M3=[[B0,"Palette Huissig…","","","9-7"],["Gpv Ath D",B0,"","","16-0"],[B0,"Don Bosco E","","","6-10"],[B0,"Allain D","","","ff"],["Peissant-Veller…",B0,"","","2-14"],[B0,"Les Templiers C","","","10-6"],["Allain D",B0,"","","ff"],["Saint-Piat D",B0,"07/11","19:00",""],["Neufvilles Senn…",B0,"14/11","19:00",""],[B0,"Bon-Secours E","28/11","19:00",""],[B0,"Royal Trefle Le…","05/12","19:00",""],["Colfontaine-Fle…",B0,"12/12","19:00",""],["Les Templiers C",B0,"16/01","19:00",""],[B0,"Peissant-Veller…","23/01","19:00",""],["Don Bosco E",B0,"13/02","19:00",""],[B0,"Gpv Ath D","20/02","19:00",""],["Palette Huissig…",B0,"27/02","19:00",""],[B0,"Saint-Piat D","13/03","19:00",""],[B0,"Neufvilles Senn…","27/03","19:00",""],["Bon-Secours E",B0,"10/04","19:30",""],["Royal Trefle Le…",B0,"17/04","19:00",""],[B0,"Colfontaine-Fle…","24/04","19:00",""]];
-const mk=(T,L)=>L.split("\n").map(l=>{const[s,o,d,h,c]=l.split("|");return s=="H"?[T,o,d||"",h||"",c||""]:[o,T,d||"",h||"",c||""]});
-const TEAMS={"Vétérans A":M,"P3 A":M3,
-"P3 B":mk("R.R. Basècles B",`H|Palette Huissig…|||11-5
-A|Colfontaine-Fle…|||12-4
-H|Snooping B|||3-13
-H|Dour B|||9-7
-A|Les Templiers B|||15-1
-H|Vaulx A|||0-16
-A|Antoing A|07/11|19:00
-A|Allain B|14/11|19:00
-H|Wodecq A|28/11|19:00
-H|Hyon - Cuesme…|05/12|19:00
-A|Palette Villoise…|12/12|19:00
-A|Vaulx A|16/01|19:00
-H|Les Templiers B|23/01|19:00
-A|Dour B|30/01|19:00
-A|Snooping B|13/02|19:00
-H|Colfontaine-Fle…|20/02|19:00
-A|Palette Huissig…|27/02|19:00
-H|Antoing A|13/03|19:00
-H|Allain B|27/03|19:00
-A|Wodecq A|10/04|19:30
-A|Hyon - Cuesme…|17/04|19:00
-H|Palette Villoise…|24/04|19:00`),
-"P4 C":mk("R.R. Basècles C",`H|Palette Huissig…|||6-10
-A|Gpv Ath E|||12-4
-H|CP Montois G|||6-10
-H|Hyon - Cuesme…|||12-4
-A|CP Montois I|||11-5
-H|Bon-Secours H|||7-9
-A|Colfontaine-Fle…|07/11|15:00
-A|Hyon - Cuesme…|14/11|15:00
-H|Dour C|28/11|19:00
-H|Cajmir H|05/12|19:00
-A|Dynamic Flenu B|12/12|19:00
-A|Bon-Secours H|16/01|15:00
-H|CP Montois I|23/01|19:00
-A|Hyon - Cuesme…|30/01|15:00
-A|CP Montois G|12/02|20:00
-H|Gpv Ath E|20/02|19:00
-A|Palette Huissig…|27/02|19:00
-H|Colfontaine-Fle…|13/03|19:00
-H|Hyon - Cuesme…|27/03|19:00
-A|Dour C|10/04|19:00
-A|Cajmir H|17/04|15:00
-H|Dynamic Flenu B|24/04|19:00`),
-"P5 D":mk("R.R. Basècles D",`H|Palette Huissig…|||6-10
-A|Palette Leuzois…|||15-1
-H|Acren E|||7-9
-H|Royal Trefle Len…|||10-6
-A|Hensies A|||14-2
-H|Lanh-Manh Wi…|||3-13
-A|Dour D|07/11|15:00
-A|Bon-Secours I|14/11|14:00
-H|Wodecq C|28/11|15:00
-H|Anvinoise A|05/12|15:00
-A|Palette De Blicq…|12/12|14:00
-A|Lanh-Manh Wi…|16/01|15:00
-H|Hensies A|23/01|15:00
-A|Royal Trefle Le…|30/01|17:00
-A|Acren E|13/02|15:00
-H|Palette Leuzois…|20/02|15:00
-A|Palette Huissig…|27/02|15:00
-H|Dour D|13/03|15:00
-H|Bon-Secours I|27/03|15:00
-A|Wodecq C|10/04|15:30
-A|Anvinoise A|17/04|14:00
-H|Palette De Blicq…|24/04|15:00`),
-"P6 E":mk("R.R. Basècles E",`H|Gpv Ath O|||15-1
-A|Gpv Ath L|||9-7
-H|Acren H|||7-9
-A|Hensies B|||15-1
-A|Bon-Secours L|07/11|14:00
-A|Neufvilles Senn…|14/11|09:30
-H|Wodecq D|28/11|15:00
-H|Royal Trefle Le…|05/12|15:00
-A|Palette Villoise…|12/12|15:00
-H|Hensies B|23/01|15:00
-A|Acren H|13/02|15:00
-H|Gpv Ath L|20/02|15:00
-A|Gpv Ath O|06/03|14:30
-H|Bon-Secours L|13/03|15:00
-H|Neufvilles Senn…|27/03|15:00
-A|Wodecq D|10/04|15:30
-A|Royal Trefle Le…|17/04|13:00
-H|Palette Villoise…|24/04|15:00`),
-"P6 F":mk("R.R. Basècles F",`H|Gpv Ath P|||ff
-A|Royal Trefle Le…|||ff
-A|Acren J|||ff
-A|Gpv Ath M|||ff
-H|Acren G|||ff
-H|Papignies C|||ff
-H|Cajmir M|||ff
-A|Hensies C|||ff
-A|Palette Villoise…|||ff
-H|Hensies C|||ff
-A|Cajmir M|||ff
-A|Acren G|||ff
-H|Gpv Ath M|||ff
-A|Gpv Ath P|||ff
-H|Royal Trefle Le…|||ff
-H|Acren J|||ff
-A|Papignies C|||ff
-H|Palette Villoise…|||ff`),
-"Dames A":mk("R.R. Basècles A",`H|CP Montois B|||0-10
-A|Palette Leuzois…|||7-3
-H|Hyon - Cuesme…|||0-10
-H|Kitch Mouscro…|||1-9
-A|Royal Trefle Le…|||9-1
-H|Saint-Piat A|||4-6
-A|Thuin C|06/11|20:00
-A|Neufvilles Senn…|14/11|10:00
-H|Gerpinnes C|28/11|13:00
-H|Bon-Secours A|05/12|13:00
-A|Dour B|12/12|10:00
-A|Saint-Piat A|16/01|10:00
-H|Royal Trefle Le…|23/01|13:00
-A|Kitch Mouscro…|29/01|20:00
-A|Hyon - Cuesme…|13/02|10:00
-H|Palette Leuzois…|20/02|10:00
-A|CP Montois B|06/03|10:00
-H|Thuin C|13/03|13:00
-H|Neufvilles Senn…|27/03|13:00
-A|Gerpinnes C|10/04|10:00
-A|Bon-Secours A|17/04|10:00
-H|Dour B|24/04|13:00`)};let team="Vétérans A";
+const CLUB="H297";let team="",PL=null,MT=null;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+const load=(u,set,t)=>{set({loading:1});fetch(u).then(r=>r.json()).then(set).catch(()=>set({error:"Connexion impossible."})).finally(()=>{if(t.includes(tab))draw()})};
+const loadPL=()=>{if(!PL)load("/api/joueurs",j=>PL=j,[0])},loadMT=()=>{if(!MT)load("/api/matchs",j=>MT=j,[1,2])};
+const upd=j=>j&&j.fetchedAt?" Dernière mise à jour : "+new Date(j.fetchedAt).toLocaleString("fr-BE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})+".":"";
 const TABS=["Classement joueurs","Résultats","Matchs","Équipes"];let tab=0,sort="pts";
 const CL={};let cw=0,cd=0,rw=0;
 const isMe=t=>/Basecles|Basècles/i.test(t);
@@ -192,12 +68,18 @@ h+=`<h3>${d.title}</h3><table class="cl"><tr><th>#</th><th class="t">Équipe</th
 return h+`<p class="warn">Données officielles AFTT (data.aftt.be), mises à jour automatiquement. Classement après la semaine ${cw}.</p>`}
 const nrm=t=>t.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/…/g,"").toLowerCase().trim();
 const tkey=(d,me)=>{const t=d.title,L=(me.match(/\s([A-Z])$/)||[])[1]||"A";if(/Vétérans|Veterans/i.test(t))return "Vétérans "+L;if(/Dames/i.test(t))return "Dames "+L;const n=(t.match(/Division\s*(\d)/)||[])[1];return "P"+n+" "+L};
-function mDate(k,opp,w){const T=TEAMS[k];if(T){const o=nrm(opp),x=T.find(x=>x[2]&&[x[0],x[1]].some(n=>!n.startsWith("R.R. Bas")&&o.startsWith(nrm(n))));if(x){const[a,b]=x[2].split("/").map(Number),dt=new Date(b>=9?2026:2027,b-1,a);return dt.toLocaleDateString("fr-BE",{weekday:"short",day:"2-digit",month:"2-digit"})+(x[3]?" · "+x[3]:"")}}const[a,b]=D[w-1].split("/").map(Number);return "Semaine du "+new Date(b>=9?2026:2027,b-1,a).toLocaleDateString("fr-BE",{day:"2-digit",month:"2-digit"})}
+const ord=k=>{const[v]=dsplit(k),i=DIVO.indexOf(v);return(i<0?99:i)+k};
+// Calendrier complet de nos équipes (API AFTT), regroupé par équipe : { "P3 A": [match, …], … }
+function teams(){if(!MT||!MT.matches)return{};if(MT.T)return MT.T;const T={};MT.matches.forEach(m=>{const home=m.homeClub==CLUB,opp=home?m.away:m.home;if(!opp||/^Bye\b/i.test(opp))return;const k=tkey({title:m.division},home?m.home:m.away);(T[k]=T[k]||[]).push({...m,isHome:home,opp})});
+const S={};Object.keys(T).sort((a,b)=>ord(a).localeCompare(ord(b))).forEach(k=>S[k]=T[k].sort((a,b)=>a.week-b.week));return MT.T=S}
+const fdate=(x,o)=>x.date?new Date(x.date+"T12:00:00").toLocaleDateString("fr-BE",o||{weekday:"short",day:"2-digit",month:"2-digit"}):"";
+const mres=x=>{const s=x.score||"";if(!s)return"";if(x.homeForfeit||x.awayForfeit||/\bff\b|\bfg\b|forfait/i.test(s))return"F";const n=s.match(/(\d+)\s*-\s*(\d+)/);if(!n)return"";const e=x.isHome?n[1]-n[2]:n[2]-n[1];return e>0?"V":e<0?"D":"N"};
+function mDate(k,opp,w){const T=teams()[k];if(T){const o=nrm(opp),c=T.filter(x=>x.date&&!x.score&&(nrm(x.opp).startsWith(o)||o.startsWith(nrm(x.opp)))).sort((a,b)=>Math.abs(a.week-w)-Math.abs(b.week-w))[0];if(c)return fdate(c)+(c.time?" · "+c.time:"")}const[a,b]=D[w-1].split("/").map(Number);return "Semaine du "+new Date(b>=9?2026:2027,b-1,a).toLocaleDateString("fr-BE",{day:"2-digit",month:"2-digit"})}
 const isVet=d=>/Vétérans|Veterans/i.test(d.title);
 // Les vétérans ont une semaine d'avance : la semaine W des autres équipes correspond à la semaine W+1 des vétérans.
 const DIVC={"Vétérans":"#f0b400","P1":"#ff4d4d","P2":"#ff6a3d","P3":"#ff8a1f","P4":"#3d9cff","P5":"#1fd1a0","P6":"#b06cff","Dames":"#ff5fa8"},DIVO=Object.keys(DIVC);
 const dsplit=k=>{const i=k.lastIndexOf(" ");return[k.slice(0,i),k.slice(i+1)]};
-function resultats(){if(!rw)rw=curWeek();const vw=rw<22?[rw+1]:[];if(rw==1)vw.unshift(1);[rw,...vw].forEach(loadCL);const ws=[rw,...vw].map(w=>CL[w]),c=ws.find(x=>x.loading||x.error)||{divisions:[...CL[rw].divisions.filter(d=>!isVet(d)),...vw.flatMap(w=>CL[w].divisions.filter(isVet))]};
+function resultats(){if(!rw)rw=curWeek();loadMT();const vw=rw<22?[rw+1]:[];if(rw==1)vw.unshift(1);[rw,...vw].forEach(loadCL);const ws=[rw,...vw].map(w=>CL[w]),c=ws.find(x=>x.loading||x.error)||{divisions:[...CL[rw].divisions.filter(d=>!isVet(d)),...vw.flatMap(w=>CL[w].divisions.filter(isVet))]};
 let h=`<div class="rh"><h2>RÉSULTATS</h2><div class="wk"><button ${rw<=1?"disabled":""} onclick="rw--;draw()">◀</button><span>${rw}${rw==1?"ère":"ème"} semaine<span class="sub">${D[rw-1]}</span></span><button ${rw>=22?"disabled":""} onclick="rw++;draw()">▶</button></div></div>`;
 if(c.loading)return h+`<p class="sub">Chargement des résultats AFTT…</p>`;
 if(c.error)return h+`<p class="sub">${c.error} <button onclick="for(const w in CL)if(CL[w].error)delete CL[w];draw()">Réessayer</button></p>`;
@@ -205,7 +87,7 @@ const L=[];c.divisions.forEach(d=>d.matches.filter(m=>isMe(m.home)||isMe(m.away)
 let r="";if(ff)r="F";else if(n){const a=+n[1],b=+n[2],e=isMe(m.home)?a-b:b-a;r=e>0?"V":e<0?"D":"N"}
 const k=tkey(d,me),rk=(d.rows.find(x=>isMe(x.team))||{}).rank;L.push({d,m,me,opp,s,n,r,k,rk})}));
 if(!L.length)return h+`<p class="sub">Aucun match de nos équipes cette semaine.</p>`;
-const ord=k=>{const[v]=dsplit(k),i=DIVO.indexOf(v);return(i<0?99:i)+k};L.sort((a,b)=>ord(a.k).localeCompare(ord(b.k)));
+L.sort((a,b)=>ord(a.k).localeCompare(ord(b.k)));
 const up=L.filter(x=>!x.r),pl=L.filter(x=>x.r),nb=k=>pl.filter(x=>x.r==k).length;
 const IC={V:"✓",N:"=",D:"✗",F:"–"};
 const row=x=>{const[dv,lt]=dsplit(x.k),col=DIVC[dv]||"#999",sh=dv=="Vétérans"?"Vét.":dv;
@@ -219,19 +101,24 @@ const ev=e=>e>0?`<span class="up">▲ +${e.toFixed(2)}</span>`:e<0?`<span class=
 function draw(){
 document.getElementById("nav").innerHTML=TABS.map((t,i)=>`<button class="${i==tab?"on":""}" onclick="tab=${i};draw()">${t}</button>`).join("");
 let h="";
-if(tab==0){const L=[...P].sort((a,b)=>sort=="pts"?b[3]-a[3]:b[2]-a[2]);
+if(tab==0){loadPL();if(PL.loading)h=`<p class="sub">Chargement du classement des joueurs AFTT…</p>`;
+else if(PL.error)h=`<p class="sub">${esc(PL.error)} <button onclick="PL=null;draw()">Réessayer</button></p>`;
+else{const L=[...PL.players].sort((a,b)=>sort=="pts"?b.points-a.points:b.evolution-a.evolution);
 h=`<div class="tog"><button class="${sort=="pts"?"on":""}" onclick="sort='pts';draw()">Par points</button><button class="${sort=="evo"?"on":""}" onclick="sort='evo';draw()">Par évolution</button></div>`+
-L.map((p,i)=>`<div class="row"><span class="rk">${i+1}</span><span class="nm">${p[0]}<br><span class="sub">${p[1]} matchs${p[4]?" · n° "+p[4]:""}</span></span><span class="pt">${p[3].toFixed(2)}</span><span class="ev">${ev(p[2])}</span></div>`).join("")+
-`<p class="warn">Situation au 1er novembre 2026. ▲▼ = évolution depuis le début de saison.</p>`}
+L.map((p,i)=>`<div class="row"><span class="rk">${i+1}</span><span class="nm">${esc(p.name)}<br><span class="sub">${p.cat?esc(p.cat)+" · ":""}${p.matches} matchs${p.rank?" · n° "+p.rank:""}</span></span><span class="pt">${p.points.toFixed(2)}</span><span class="ev">${ev(p.evolution)}</span></div>`).join("")+
+`<p class="warn">Classement numérique officiel AFTT (data.aftt.be), mis à jour automatiquement. ▲▼ = évolution depuis les points de base du début de saison.${upd(PL)}</p>`}}
 if(tab==1)h=resultats();
-if(tab==2){const nm=t=>t.startsWith("R.R. Bas")?`<b>${t}</b>`:t,pl=TEAMS[team].filter(x=>x[4]),up=TEAMS[team].filter(x=>!x[4]);
-const rs=x=>{if(x[4]=="ff")return "F";const s=x[4].split("-").map(Number),r=x[0].startsWith("R.R. Bas")?s[0]-s[1]:s[1]-s[0];return r>0?"V":r<0?"D":"N"};
-const wd=d=>{const[a,b]=d.split("/").map(Number);return new Date(b>=9?2026:2027,b-1,a).toLocaleDateString("fr-BE",{weekday:"short"})};
-const c=pl.map(rs),n=k=>c.filter(z=>z==k).length;
-h=`<div class="tog">${Object.keys(TEAMS).map(k=>`<button class="${k==team?"on":""}" onclick="team='${k}';draw()">${k}</button>`).join("")}</div><h3>R.R. Basècles · ${team}</h3><p class="sub">Joués : ${pl.length} · ${n("V")} victoire(s) · ${n("N")} nul · ${n("D")} défaite(s)${n("F")?" · "+n("F")+" forfait(s)":""}</p><h3>À venir</h3>`+
-up.map((x,i)=>`<div class="res F" ${i==0?'style="outline:2px solid var(--gold)"':""}><div>${nm(x[0])}<br>${nm(x[1])}</div><div class="sc">${x[2]}<br><span class="sub">${wd(x[2])} · ${x[3]}</span></div></div>`).join("")+
-`<h3>Déjà joués</h3>`+pl.map(x=>`<div class="res ${rs(x)}"><div>${nm(x[0])}<br>${nm(x[1])}</div><div class="sc">${x[4]=="ff"?"0 - 0 ff":x[4].replace("-"," - ")}</div></div>`).join("")+
-`<p class="warn">Contour doré = prochain match. Les dates des matchs déjà joués ne figuraient pas sur les captures. Noms d’équipes tronqués comme sur l’écran d’origine.</p>`}
+if(tab==2){loadMT();if(MT.loading)h=`<p class="sub">Chargement des matchs AFTT…</p>`;
+else if(MT.error)h=`<p class="sub">${esc(MT.error)} <button onclick="MT=null;draw()">Réessayer</button></p>`;
+else{const T=teams(),K=Object.keys(T);if(!T[team])team=K[0];const all=T[team]||[];
+const pl=all.filter(x=>mres(x)),up=all.filter(x=>!mres(x)),c=pl.map(mres),n=k=>c.filter(z=>z==k).length;
+const nm=x=>{const me=`<b>R.R. Basècles ${esc(dsplit(team)[1])}</b>`,o=esc(x.opp);return x.isHome?me+"<br>"+o:o+"<br>"+me};
+const when=x=>x.date?`${fdate(x,{day:"2-digit",month:"2-digit"})}<br><span class="sub">${fdate(x,{weekday:"short"})}${x.time?" · "+x.time:""}</span>`:`<span class="sub">Date à fixer</span>`;
+const sc=x=>mres(x)=="F"?"Forfait":esc(x.score.replace(/\s*-\s*/," - "));
+h=`<div class="tog">${K.map(k=>`<button class="${k==team?"on":""}" onclick="team='${esc(k)}';draw()">${esc(k)}</button>`).join("")}</div><h3>R.R. Basècles · ${esc(team)}</h3><p class="sub">${esc((all[0]||{}).division||"")}<br>Joués : ${pl.length} · ${n("V")} victoire(s) · ${n("N")} nul · ${n("D")} défaite(s)${n("F")?" · "+n("F")+" forfait(s)":""}</p>`+
+(up.length?`<h3>À venir</h3>`+up.map((x,i)=>`<div class="res F" ${i==0?'style="outline:2px solid var(--gold)"':""}><div>${nm(x)}</div><div class="sc">${when(x)}</div></div>`).join(""):"")+
+(pl.length?`<h3>Déjà joués</h3>`+pl.map(x=>`<div class="res ${mres(x)}"><div>${nm(x)}</div><div class="sc">${sc(x)}<br><span class="sub">${fdate(x,{day:"2-digit",month:"2-digit"})}</span></div></div>`).join(""):"")+
+`<p class="warn">Calendrier et résultats officiels AFTT, mis à jour automatiquement. Contour doré = prochain match.${upd(MT)}</p>`}}
 if(tab==3)h=equipes();
 document.getElementById("m").innerHTML=h}
 draw();
