@@ -66,6 +66,7 @@ export default async (req: Request) => {
         headers: {
           "Cache-Control": "public, max-age=60",
           "Netlify-CDN-Cache-Control": "public, durable, s-maxage=300, stale-while-revalidate=3600",
+          "Netlify-CDN-Cache-Control": "public, durable, s-maxage=1800, stale-while-revalidate=86400",
           "Netlify-Vary": "query=semaine",
         },
       },
