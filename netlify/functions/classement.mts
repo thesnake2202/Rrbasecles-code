@@ -46,7 +46,9 @@ function parse(html: string) {
 }
 
 export default async (req: Request) => {
-  const week = Number(new URL(req.url).searchParams.get("semaine"));
+  const urlParams = new URL(req.url).searchParams;
+const week = urlParams.get("semaine") ? Number(urlParams.get("semaine")) : 1;
+
   if (!Number.isInteger(week) || week < 1 || week > 22) {
     return Response.json({ error: "Paramètre semaine invalide (1 à 22)." }, { status: 400 });
   }
