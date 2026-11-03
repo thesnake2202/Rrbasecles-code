@@ -42,6 +42,21 @@ export const column = (actives: number) => Math.min(16, Math.max(0, Math.floor((
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+// Page « Outils » de l'AFTT : nombre officiel de joueurs actifs (hors NC) du classement mixte et date du dernier calcul.
+export const TOOLS_URL = `${BASE}/tools/index.php?lang=en`;
+
+export async function fetchActives(): Promise<{ actives: number; calc: string }> {
+  const res = await fetch(TOOLS_URL, { signal: AbortSignal.timeout(20000) });
+  if (!res.ok) throw new Error(`AFTT outils ${res.status}`);
+  const html = await res.text();
+  // Premier compteur = « joueurs actifs hors NC » (classement mixte général), le second concerne les dames.
+  const m = html.match(/ranking-stat-value">([^<]*)<\/div>\s*<p class="ranking-stat-label">\s*joueurs actifs/i);
+  const actives = Number((m?.[1] || "").replace(/\D/g, ""));
+  if (!actives) throw new Error("Nombre de joueurs actifs introuvable sur la page Outils AFTT");
+  const calc = ((html.match(/Dernier calcul mixte termin[^:]*:\s*([^<]*)/) || [])[1] || "").trim();
+  return { actives, calc };
+}
+
 type Row = { position: number; cat: string; points: number };
 
 async function page(n: number): Promise<{ rows: Row[]; pages: number }> {
@@ -61,7 +76,7 @@ async function page(n: number): Promise<{ rows: Row[]; pages: number }> {
       if (start < 0) throw new Error("Tableau introuvable");
       const part = html.slice(start, html.indexOf("</table>", start));
       const rows = [...part.matchAll(/<tr class="ranking-row"[\s\S]*?<\/tr>/g)].map((m) => ({
-        position: Number(((m[0].match(/rank-pill">([^<]*)/) || [])[1] || "").replace(/\D/g, "")) || 0,
+        position: Number(((m[0].match(/rank-pill[^"]*">([^<]*)/) || [])[1] || "").replace(/\D/g, "")) || 0,
         cat: letter((m[0].match(/ranking-badge">([^<]*)/) || [])[1] || ""),
         points: Number(((m[0].match(/points-cell">([^<]*)/) || [])[1] || "").replace(/[^\d,.-]/g, "").replace(",", ".")) || 0,
       }));
@@ -73,30 +88,49 @@ async function page(n: number): Promise<{ rows: Row[]; pages: number }> {
   throw err;
 }
 
-// Parcourt tout le classement mixte, compte les joueurs actifs et applique le tableau d'équivalence.
+// Prend le nombre officiel de joueurs actifs sur la page Outils AFTT (repli : comptage du classement), parcourt
+// tout le classement mixte pour relever les points à chaque palier et applique le tableau d'équivalence.
 export async function computeLimits() {
+  const official = await fetchActives().catch((e) => (console.error(e), null));
   const first = await page(1);
   if (!first.pages || !first.rows.length) throw new Error("Classement AFTT vide");
   const all: Row[][] = [first.rows];
   // Une page à la fois, avec une courte pause, pour ménager le site de l'AFTT.
   for (let n = 2; n <= first.pages; n++) {
-    await sleep(400);
+    await sleep(1500);
     all.push((await page(n)).rows);
   }
   const rows = all
     .flat()
     .filter((r) => r.position > 0)
     .sort((a, b) => a.position - b.position);
-  const actives = rows.length;
+  // Repli : comptage des joueurs classés hors NC, comme le compteur officiel AFTT.
+  const actives = official?.actives || rows.filter((r) => r.cat && r.cat !== "NC").length;
+  const afttCalc = official?.calc || null;
   const k = column(actives);
+  // Les places du tableau se comptent dans le classement numérique sans les NC. Dans le classement AFTT, les NC
+  // occupent une place (dès ~8 300e) : la place d'un actif = son rang AFTT moins le nombre de NC classés devant lui.
+  // Pour chaque palier, on retient le rang AFTT et les points du dernier actif dont la place reste dans le palier
+  // (le rang AFTT reste ainsi directement comparable à celui des joueurs du club).
+  const act: (Row & { place: number })[] = [];
+  let nc = 0;
+  for (const r of rows) {
+    if (!r.cat || r.cat === "NC") {
+      if (r.cat === "NC") nc++;
+      continue;
+    }
+    act.push({ ...r, place: r.position - nc });
+  }
+  const lastRank = rows[rows.length - 1].position;
   let prev = 0;
   return Object.entries(TABLE).map(([cat, cols]) => {
-    const lastPosition = cols[k];
-    // Points du dernier joueur à l'intérieur du palier (null si le palier dépasse le nombre d'actifs).
-    const at = lastPosition <= rows[rows.length - 1].position ? rows.filter((r) => r.position <= lastPosition).at(-1) : undefined;
-    const players = lastPosition - prev;
-    prev = lastPosition;
-    return { cat, ord: ORDER.indexOf(cat), players, lastPosition, points: at ? at.points : null, actives };
+    const place = cols[k];
+    // Dernier actif à l'intérieur du palier (aucun si le palier couvre tous les actifs).
+    const at = place <= (act.at(-1)?.place || 0) ? act.filter((r) => r.place <= place).at(-1) : undefined;
+    const lastPosition = at ? at.position : lastRank;
+    const players = place - prev;
+    prev = place;
+    return { cat, ord: ORDER.indexOf(cat), players, lastPosition, points: at ? at.points : null, actives, afttCalc };
   });
 }
 
@@ -114,6 +148,7 @@ export async function refreshLimits() {
         lastPosition: sql`excluded.last_position`,
         points: sql`excluded.points`,
         actives: sql`excluded.actives`,
+        afttCalc: sql`excluded.aftt_calc`,
         updatedAt: sql`now()`,
       },
     });
@@ -123,17 +158,17 @@ export async function refreshLimits() {
 // Derniers paliers calculés avec le tableau officiel (ou [] s'il n'y en a pas encore).
 export async function latestLimits() {
   const [last] = await db
-    .select({ day: classLimits.day, actives: classLimits.actives })
+    .select({ day: classLimits.day, actives: classLimits.actives, afttCalc: classLimits.afttCalc })
     .from(classLimits)
     .where(isNotNull(classLimits.actives))
     .orderBy(desc(classLimits.day))
     .limit(1);
   type Limit = { cat: string; players: number; lastPosition: number; points: number | null };
-  if (!last) return { day: "", actives: 0, limits: [] as Limit[] };
+  if (!last) return { day: "", actives: 0, afttCalc: "", limits: [] as Limit[] };
   const rows: Limit[] = await db
     .select({ cat: classLimits.cat, players: classLimits.players, lastPosition: classLimits.lastPosition, points: classLimits.points })
     .from(classLimits)
     .where(and(eq(classLimits.day, last.day), isNotNull(classLimits.actives)))
     .orderBy(classLimits.ord);
-  return { day: String(last.day), actives: last.actives || 0, limits: rows };
+  return { day: String(last.day), actives: last.actives || 0, afttCalc: last.afttCalc || "", limits: rows };
 }

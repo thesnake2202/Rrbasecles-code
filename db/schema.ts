@@ -27,6 +27,8 @@ export const classLimits = pgTable(
     lastPosition: integer("last_position").notNull(),
     points: real(),
     actives: integer(),
+    // Horodatage « Dernier calcul mixte terminé » publié par l'AFTT pour le comptage des actifs utilisé.
+    afttCalc: text("aftt_calc"),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.day, t.cat] })],
