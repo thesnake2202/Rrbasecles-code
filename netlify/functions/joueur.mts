@@ -76,7 +76,7 @@ export default async (req: Request) => {
     if (!data.history.length && !data.days.length) throw new Error("Fiche vide");
     // Mémorise la position du jour puis renvoie tout l'historique des positions.
     let ranks: { date: string; position: number; cat: string }[] = [];
-    let limits: Awaited<ReturnType<typeof latestLimits>> = { day: "", actives: 0, limits: [] };
+    let limits: Awaited<ReturnType<typeof latestLimits>> = { day: "", actives: 0, afttCalc: "", limits: [] };
     try {
       if (data.position > 0)
         await saveSnapshots([{ licence, position: data.position, points: data.history.at(-1)?.points, cat: data.cat }]);

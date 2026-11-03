@@ -1,0 +1,1 @@
+ALTER TABLE "class_limits" ADD COLUMN "aftt_calc" text;
