@@ -41,12 +41,18 @@ table.rt{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fix
 .rt .s{display:none}.lgd{display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px 14px;margin:14px 0 6px;font-size:16px}.lgd i{display:inline-block;width:15px;height:15px;border-radius:3px;vertical-align:-2px;margin-right:6px}
 .rsec{margin:22px 0 6px;font-style:italic;font-weight:900;text-transform:uppercase;display:inline-block;background:#c41818;color:#fff;padding:5px 18px;clip-path:polygon(6% 0,100% 0,94% 100%,0 100%)}
 @media (max-width:560px){.rh h2{font-size:36px}table.rt{font-size:12px;border-spacing:2px;margin:0 -2px;width:calc(100% + 4px)}.rt th{font-size:9px;padding:7px 1px;letter-spacing:0}.rt td{padding:5px 2px;height:46px}.rt td.op{font-size:11px;white-space:normal;overflow-wrap:anywhere;line-height:1.2}.rt td.sc{font-size:14px}.rt .loc{font-size:8px;padding:1px 4px;margin-top:3px}.rt td.sc small{font-size:9px}.rt td.r{font-size:18px}.rt td.ck span{min-width:0;font-size:13px;padding:1px 4px}.rt .l{display:none}.rt .s{display:inline}.lgd{font-size:14px}}
+.row.ck{cursor:pointer}.row.ck:hover{outline:1px solid var(--red)}.row .go{color:var(--mu);font-size:18px}
+.bk{padding:8px 14px;border-radius:8px;border:1px solid var(--mu);background:var(--card);color:var(--tx);font-weight:700;margin-bottom:10px}
+.pf h2{margin:0 0 2px;font-size:22px}.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}.kp div{background:var(--card);border-radius:8px;padding:8px}.kp span{display:block;font-size:11px;color:var(--mu);text-transform:uppercase}.kp b{font-size:16px}
+.chart{background:var(--card);border-radius:8px;padding:10px 6px 4px}.chart svg{display:block;width:100%;height:auto}.chart text{fill:var(--mu);font-size:11px}.chart .gl{stroke:var(--alt);stroke-width:1}.chart .ln{fill:none;stroke:#e03030;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}.chart .dt{fill:var(--card);stroke:#e03030;stroke-width:2}.chart .lv{fill:var(--gold);font-weight:800;font-size:12px}
+.day{background:var(--card);border-radius:8px;margin-bottom:8px;overflow:hidden}.day h4{margin:0;padding:8px 10px;background:var(--alt);font-size:13px;display:flex;justify-content:space-between;gap:8px}.day .m{display:flex;gap:8px;align-items:center;padding:7px 10px;border-top:1px solid var(--alt);font-size:14px}.day .m span:first-child{flex:1}.day .m b{min-width:40px;text-align:center}.day .m .d{min-width:64px;text-align:right;font-weight:700}
+@media (max-width:420px){.kp{grid-template-columns:repeat(2,1fr)}}
 </style></head><body>
 <header><h1>H297</h1><b>Royal Raquette Rouge Basècles</b><small>Tennis de table · saison 2026-2027</small></header>
 <nav id="nav"></nav><main id="m"></main>
 <script>
 const D="19/09 26/09 03/10 10/10 17/10 31/10 07/11 14/11 28/11 05/12 12/12 16/01 23/01 30/01 13/02 20/02 06/03 13/03 27/03 10/04 17/04 24/04".split(" ");
-const CLUB="H297";let team="",PL=null,MT=null;
+const CLUB="H297";let team="",PL=null,MT=null,sel="";const PF={};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
 const load=(u,set,t)=>{set({loading:1});fetch(u).then(r=>r.json()).then(set).catch(()=>set({error:"Connexion impossible."})).finally(()=>{if(t.includes(tab))draw()})};
 const loadPL=()=>{if(!PL)load("/api/joueurs",j=>PL=j,[0])},loadMT=()=>{if(!MT)load("/api/matchs",j=>MT=j,[1,2])};
@@ -99,14 +105,15 @@ if(up.length)h+=`<div class="rsec">À venir</div>`+tbl(up);
 return h+`<p class="warn">Données officielles AFTT (data.aftt.be). Les vétérans ayant une semaine d'avance, leur semaine N+1 est affichée avec la semaine N des autres équipes.</p>`}
 const ev=e=>e>0?`<span class="up">▲ +${e.toFixed(2)}</span>`:e<0?`<span class="dn">▼ ${e.toFixed(2)}</span>`:`<span class="eq">= 0</span>`;
 function draw(){
-document.getElementById("nav").innerHTML=TABS.map((t,i)=>`<button class="${i==tab?"on":""}" onclick="tab=${i};draw()">${t}</button>`).join("");
+document.getElementById("nav").innerHTML=TABS.map((t,i)=>`<button class="${i==tab?"on":""}" onclick="tab=${i};sel='';draw()">${t}</button>`).join("");
 let h="";
 if(tab==0){loadPL();if(PL.loading)h=`<p class="sub">Chargement du classement des joueurs AFTT…</p>`;
 else if(PL.error)h=`<p class="sub">${esc(PL.error)} <button onclick="PL=null;draw()">Réessayer</button></p>`;
+else if(sel)h=fiche();
 else{const L=[...PL.players].sort((a,b)=>sort=="pts"?b.points-a.points:b.evolution-a.evolution);
 h=`<div class="tog"><button class="${sort=="pts"?"on":""}" onclick="sort='pts';draw()">Par points</button><button class="${sort=="evo"?"on":""}" onclick="sort='evo';draw()">Par évolution</button></div>`+
-L.map((p,i)=>`<div class="row"><span class="rk">${i+1}</span><span class="nm">${esc(p.name)}<br><span class="sub">${p.cat?esc(p.cat)+" · ":""}${p.matches} matchs${p.rank?" · n° "+p.rank:""}</span></span><span class="pt">${p.points.toFixed(2)}</span><span class="ev">${ev(p.evolution)}</span></div>`).join("")+
-`<p class="warn">Classement numérique officiel AFTT (data.aftt.be), mis à jour automatiquement. ▲▼ = évolution depuis les points de base du début de saison.${upd(PL)}</p>`}}
+L.map((p,i)=>`<div class="row ck" role="button" tabindex="0" onclick="openP('${esc(p.licence)}')" onkeydown="if(event.key=='Enter')openP('${esc(p.licence)}')"><span class="rk">${i+1}</span><span class="nm">${esc(p.name)}<br><span class="sub">${p.cat?esc(p.cat)+" · ":""}${p.matches} matchs${p.rank?" · n° "+p.rank:""}</span></span><span class="pt">${p.points.toFixed(2)}</span><span class="ev">${ev(p.evolution)}</span><span class="go">›</span></div>`).join("")+
+`<p class="warn">Classement numérique officiel AFTT (data.aftt.be), mis à jour automatiquement. ▲▼ = évolution depuis les points de base du début de saison. Touchez un joueur pour voir son graphique d'évolution.${upd(PL)}</p>`}}
 if(tab==1)h=resultats();
 if(tab==2){loadMT();if(MT.loading)h=`<p class="sub">Chargement des matchs AFTT…</p>`;
 else if(MT.error)h=`<p class="sub">${esc(MT.error)} <button onclick="MT=null;draw()">Réessayer</button></p>`;
@@ -121,5 +128,36 @@ h=`<div class="tog">${K.map(k=>`<button class="${k==team?"on":""}" onclick="team
 `<p class="warn">Calendrier et résultats officiels AFTT, mis à jour automatiquement. Contour doré = prochain match.${upd(MT)}</p>`}}
 if(tab==3)h=equipes();
 document.getElementById("m").innerHTML=h}
+
+// Fiche joueur : graphique d'évolution des points + détail des matchs (data.aftt.be).
+function openP(l){sel=l;if(!PF[l]){PF[l]={loading:1};fetch("/api/joueur?licence="+encodeURIComponent(l)).then(r=>r.json()).then(j=>PF[l]=j).catch(()=>PF[l]={error:"Connexion impossible."}).finally(()=>{if(tab==0&&sel==l)draw()})}history.pushState({p:l},"");draw();scrollTo(0,0)}
+function closeP(){if(history.state&&history.state.p)history.back();else{sel="";draw()}}
+addEventListener("popstate",e=>{sel=(e.state&&e.state.p)||"";draw()});
+const f2=n=>n.toLocaleString("fr-BE",{minimumFractionDigits:2,maximumFractionDigits:2});
+const MO="janv. févr. mars avr. mai juin juil. août sept. oct. nov. déc.".split(" ");
+function chart(H){if(H.length<2)return `<div class="chart"><p class="sub" style="text-align:center;padding:30px 0">Pas encore assez de données pour afficher une évolution.</p></div>`;
+const W=600,Ht=230,L=48,R=16,T=22,B=28,v=H.map(x=>x.points);let lo=Math.min(...v),hi=Math.max(...v);if(hi-lo<10){const c=(hi+lo)/2;lo=c-5;hi=c+5}const pd=(hi-lo)*.12;lo-=pd;hi+=pd;
+const X=i=>L+(W-L-R)*i/(H.length-1),Y=y=>T+(Ht-T-B)*(hi-y)/(hi-lo);
+const tk=Array.from({length:4},(_,i)=>lo+(hi-lo)*i/3);
+const pts=H.map((x,i)=>X(i).toFixed(1)+","+Y(x.points).toFixed(1));
+const lab=(x,i)=>i==0?"Base":(()=>{const[y,m]=x.date.split("-").map(Number);return MO[m-1]+(i==H.length-1||m==1?" "+String(y).slice(2):"")})();
+const step=Math.ceil(H.length/8);
+return `<div class="chart"><svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Évolution des points"><defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e03030" stop-opacity=".35"/><stop offset="1" stop-color="#e03030" stop-opacity="0"/></linearGradient></defs>
+${tk.map(t=>`<line class="gl" x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}"/><text x="${L-6}" y="${Y(t)+4}" text-anchor="end">${Math.round(t)}</text>`).join("")}
+<polygon fill="url(#ga)" points="${X(0)},${Ht-B} ${pts.join(" ")} ${X(H.length-1)},${Ht-B}"/><polyline class="ln" points="${pts.join(" ")}"/>
+${H.map((x,i)=>`<circle class="dt" cx="${X(i)}" cy="${Y(x.points)}" r="4"><title>${i==0?"Points de base":new Date(x.date+"T12:00:00").toLocaleDateString("fr-BE",{day:"2-digit",month:"long",year:"numeric"})} : ${f2(x.points)} pts</title></circle>${i%step==0||i==H.length-1?`<text x="${X(i)}" y="${Ht-8}" text-anchor="${i==0?"start":i==H.length-1?"end":"middle"}">${lab(x,i)}</text>`:""}`).join("")}
+<text class="lv" x="${X(H.length-1)}" y="${Y(v[v.length-1])-10}" text-anchor="end">${f2(v[v.length-1])}</text></svg></div>`}
+const dl=n=>n>0?`<span class="up">+${f2(n)}</span>`:n<0?`<span class="dn">${f2(n)}</span>`:`<span class="eq">0</span>`;
+function fiche(){const p=(PL.players||[]).find(x=>x.licence==sel)||{name:"",licence:sel},f=PF[sel]||{loading:1};
+let h=`<div class="pf"><button class="bk" onclick="closeP()">◀ Classement</button><h2>${esc(p.name||f.name)}</h2><span class="sub">${p.cat?esc(p.cat)+" · ":""}Licence ${esc(sel)}${p.rank?" · n° "+p.rank+" du classement":""}</span>`;
+if(f.loading)return h+`<p class="sub">Chargement de la fiche AFTT…</p></div>`;
+if(f.error)return h+`<p class="sub">${esc(f.error)} <button onclick="delete PF['${esc(sel)}'];openP('${esc(sel)}')">Réessayer</button></p></div>`;
+const H=f.history||[],v=H.map(x=>x.points),cur=v.length?v[v.length-1]:p.points||0,e=v.length?cur-v[0]:0;
+h+=`<div class="kp"><div><span>Actuel</span><b class="pt">${f2(cur)}</b></div><div><span>Évolution</span><b>${dl(e)}</b></div><div><span>Plus haut</span><b>${v.length?f2(Math.max(...v)):"–"}</b></div><div><span>Plus bas</span><b>${v.length?f2(Math.min(...v)):"–"}</b></div></div>`;
+h+=`<h3>Évolution des points</h3>`+chart(H);
+const D2=f.days||[];
+if(D2.length)h+=`<h3>Matchs de la saison</h3>`+D2.map(d=>`<div class="day"><h4><span>${esc(d.date)} · ${esc(d.club)}</span>${dl(d.total)}</h4>${d.matches.map(m=>`<div class="m"><span>${esc(m.opponent)}<br><span class="sub">${esc(m.ranking)}${m.opponentPoints?" · "+f2(m.opponentPoints)+" pts":""}${m.women?" · Dames":""}</span></span><b>${esc(m.score)}</b><span class="d">${dl(m.delta)}</span></div>`).join("")}</div>`).join("");
+else h+=`<p class="sub">Aucun match enregistré cette saison.</p>`;
+return h+`<p class="warn">Données officielles AFTT, mises à jour automatiquement. Les points d'un mois sont comptabilisés le 1er du mois suivant. <a href="${esc(f.url)}" target="_blank" rel="noopener" style="color:var(--gold)">Voir la fiche sur data.aftt.be ↗</a></p></div>`}
 draw();
 </script></body></html>
