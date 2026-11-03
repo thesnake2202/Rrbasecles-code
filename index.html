@@ -48,6 +48,12 @@ table.rt{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fix
 .day{background:var(--card);border-radius:8px;margin-bottom:8px;overflow:hidden}.day h4{margin:0;padding:8px 10px;background:var(--alt);font-size:13px;display:flex;justify-content:space-between;gap:8px}.day .m{display:flex;gap:8px;align-items:center;padding:7px 10px;border-top:1px solid var(--alt);font-size:14px}.day .m span:first-child{flex:1}.day .m b{min-width:40px;text-align:center}.day .m .d{min-width:64px;text-align:right;font-weight:700}
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.charts h3{margin-top:14px}.chart .ln.b{stroke:#5b7cff}.chart .dt.b{stroke:#5b7cff}.chart .lv.b{fill:#8ea2ff}
 .rs{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:10px 8px 6px;border-top:1px solid var(--alt);margin-top:6px}.rs span{display:block;font-size:11px;color:var(--mu);text-transform:uppercase}.rs b{font-size:17px}.rs .r{text-align:right}.cb{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:6px;background:#5b7cff;color:#fff;font-size:12px;vertical-align:2px}.chart .nt{font-size:12px;color:var(--mu);padding:0 8px 6px}
+.chart .tl{stroke:var(--gold);stroke-width:1;stroke-dasharray:4 4;opacity:.75}.chart .tt{fill:var(--gold);font-weight:800;font-size:11px}.chart .tb{fill:var(--gold);opacity:.07}
+.lad{background:var(--card);border-radius:8px;overflow:hidden}.lad .t{display:grid;grid-template-columns:52px 1fr auto;gap:4px 10px;align-items:center;padding:8px 10px;border-top:1px solid var(--alt);font-size:14px}.lad .t:first-child{border-top:0}
+.lad .t .c{font-weight:900;font-size:17px;font-style:italic;text-align:center;border-radius:6px;padding:3px 0;background:var(--alt)}.lad .t.me{background:rgba(240,190,90,.13);box-shadow:inset 4px 0 0 var(--gold)}.lad .t.me .c{background:var(--gold);color:#1b1b1e}
+.lad .t .g{text-align:right;font-weight:800;white-space:nowrap}.lad .t .g small{display:block;font-weight:400;color:var(--mu);font-size:11px}.lad .t.up .c{color:var(--ok)}.lad .t.dn .c{color:var(--ko)}
+.lad .mo{display:block;width:100%;padding:9px;border:0;border-top:1px solid var(--alt);background:var(--alt);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}
+.pal{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 8px}.pal div{flex:1;min-width:140px;background:var(--card);border-radius:8px;padding:8px 10px}.pal span{display:block;font-size:11px;color:var(--mu);text-transform:uppercase}.pal b{font-size:16px}
 @media (max-width:640px){.charts{grid-template-columns:1fr}}
 @media (max-width:420px){.kp{grid-template-columns:repeat(2,1fr)}}
 </style></head><body>
@@ -138,8 +144,12 @@ function closeP(){if(history.state&&history.state.p)history.back();else{sel="";d
 addEventListener("popstate",e=>{sel=(e.state&&e.state.p)||"";draw()});
 const f2=n=>n.toLocaleString("fr-BE",{minimumFractionDigits:2,maximumFractionDigits:2});
 const MO="janv. févr. mars avr. mai juin juil. août sept. oct. nov. déc.".split(" ");
-function chart(H){if(H.length<2)return `<div class="chart"><p class="sub" style="text-align:center;padding:30px 0">Pas encore assez de données pour afficher une évolution.</p></div>`;
-const W=600,Ht=230,L=48,R=16,T=22,B=28,v=H.map(x=>x.points);let lo=Math.min(...v),hi=Math.max(...v);if(hi-lo<10){const c=(hi+lo)/2;lo=c-5;hi=c+5}const pd=(hi-lo)*.12;lo-=pd;hi+=pd;
+// Lignes de palier (classements lettres) à superposer à un graphique : G = { all:[{v,t}], need:[valeurs à inclure] }.
+function guides(G,lo,hi,Y,W,R,L,up){if(!G||!G.all.length)return"";let last=-99;const vis=G.all.filter(g=>g.v>=lo&&g.v<=hi);
+return vis.map(g=>{const y=Y(g.v),ly=up?y-4:y+12,lab=Math.abs(ly-last)>12;if(lab)last=ly;return `<line class="tl" x1="${L}" x2="${W-R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/>${lab?`<text class="tt" x="${W-R+4}" y="${(y+4).toFixed(1)}">${esc(g.t)}</text>`:""}`}).join("")}
+const span=(v,G,min,floor)=>{let lo=Math.min(...v,...(G?G.need:[])),hi=Math.max(...v,...(G?G.need:[]));if(hi-lo<min){const c=(hi+lo)/2;lo=c-min/2;hi=c+min/2}const pd=(hi-lo)*.1;return[floor!=null?Math.max(floor,lo-pd):lo-pd,hi+pd]};
+function chart(H,G){if(H.length<2)return `<div class="chart"><p class="sub" style="text-align:center;padding:30px 0">Pas encore assez de données pour afficher une évolution.</p></div>`;
+const W=600,Ht=230,L=48,R=G&&G.all.length?34:16,T=22,B=28,v=H.map(x=>x.points);const[lo,hi]=span(v,G,10);
 const X=i=>L+(W-L-R)*i/(H.length-1),Y=y=>T+(Ht-T-B)*(hi-y)/(hi-lo);
 const tk=Array.from({length:4},(_,i)=>lo+(hi-lo)*i/3);
 const pts=H.map((x,i)=>X(i).toFixed(1)+","+Y(x.points).toFixed(1));
@@ -147,29 +157,45 @@ const lab=(x,i)=>i==0?"Base":(()=>{const[y,m]=x.date.split("-").map(Number);retu
 const step=Math.ceil(H.length/8);
 return `<div class="chart"><svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Évolution des points"><defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e03030" stop-opacity=".35"/><stop offset="1" stop-color="#e03030" stop-opacity="0"/></linearGradient></defs>
 ${tk.map(t=>`<line class="gl" x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}"/><text x="${L-6}" y="${Y(t)+4}" text-anchor="end">${Math.round(t)}</text>`).join("")}
+${guides(G,lo,hi,Y,W,R,L,1)}
 <polygon fill="url(#ga)" points="${X(0)},${Ht-B} ${pts.join(" ")} ${X(H.length-1)},${Ht-B}"/><polyline class="ln" points="${pts.join(" ")}"/>
 ${H.map((x,i)=>`<circle class="dt" cx="${X(i)}" cy="${Y(x.points)}" r="4"><title>${i==0?"Points de base":new Date(x.date+"T12:00:00").toLocaleDateString("fr-BE",{day:"2-digit",month:"long",year:"numeric"})} : ${f2(x.points)} pts</title></circle>${i%step==0||i==H.length-1?`<text x="${X(i)}" y="${Ht-8}" text-anchor="${i==0?"start":i==H.length-1?"end":"middle"}">${lab(x,i)}</text>`:""}`).join("")}
-<text class="lv" x="${X(H.length-1)}" y="${Y(v[v.length-1])-10}" text-anchor="end">${f2(v[v.length-1])}</text></svg></div>`}
+<text class="lv" x="${X(H.length-1)}" y="${Y(v[v.length-1])-10}" text-anchor="end">${f2(v[v.length-1])}</text></svg>
+${G&&G.all.length?`<p class="nt">Pointillés dorés = points minimum de chaque palier aujourd'hui.</p>`:""}</div>`}
 // Graphique d'évolution de la position au classement numérique (1 = meilleur, en haut).
 const n0=n=>n.toLocaleString("fr-BE");
-function rchart(R){if(!R.length)return `<div class="chart"><p class="sub" style="text-align:center;padding:30px 12px">Pas encore de position au classement numérique (actif à partir de 10 matchs).</p></div>`;
-const W=600,Ht=230,L=56,R0=16,T=22,B=28,t=R.map(x=>Date.parse(x.date+"T12:00:00")),v=R.map(x=>x.position);
-let lo=Math.min(...v),hi=Math.max(...v);if(hi-lo<20){const c=(hi+lo)/2;lo=c-10;hi=c+10}const pd=(hi-lo)*.12;lo=Math.max(1,lo-pd);hi+=pd;
+function rchart(R,G,P){if(!R.length)return `<div class="chart"><p class="sub" style="text-align:center;padding:30px 12px">Pas encore de position au classement numérique (actif à partir de 10 matchs).</p></div>`;
+const W=600,Ht=230,L=56,R0=G&&G.all.length?34:16,T=22,B=28,t=R.map(x=>Date.parse(x.date+"T12:00:00")),v=R.map(x=>x.position);
+const[lo,hi]=span(v,G,20,1);
 const t0=t[0],t1=Math.max(t[t.length-1],t0+864e5),X=i=>R.length<2?(L+W-R0)/2:L+(W-L-R0)*(t[i]-t0)/(t1-t0),Y=y=>T+(Ht-T-B)*(y-lo)/(hi-lo);
 const tk=Array.from({length:4},(_,i)=>lo+(hi-lo)*i/3),pts=R.map((x,i)=>X(i).toFixed(1)+","+Y(x.position).toFixed(1));
 const fd=(d,o)=>new Date(d+"T12:00:00").toLocaleDateString("fr-BE",o),sd={day:"2-digit",month:"2-digit",year:"2-digit"};
 const lab=R.length<2?[0]:[0,...(R.length>2?[Math.floor((R.length-1)/2)]:[]),R.length-1];
 const cur=v[v.length-1],prev=v.length>1?v[v.length-2]:null,dv=prev==null?0:prev-cur,c=R[R.length-1].cat;
 const vs=prev==null?`<span class="eq">–</span>`:dv>0?`<span class="up">▲ ${n0(dv)}</span>`:dv<0?`<span class="dn">▼ ${n0(-dv)}</span>`:`<span class="eq">= 0</span>`;
+// Bande du palier actuel (entre la limite du palier supérieur et celle du palier projeté).
+const band=P&&P.top!=null?(()=>{const a=Math.max(lo,P.top),b=Math.min(hi,P.bottom);return b>a?`<rect class="tb" x="${L}" width="${W-L-R0}" y="${Y(a).toFixed(1)}" height="${(Y(b)-Y(a)).toFixed(1)}"/>`:""})():"";
 return `<div class="chart"><svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Évolution de la position au classement"><defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b7cff" stop-opacity=".35"/><stop offset="1" stop-color="#5b7cff" stop-opacity="0"/></linearGradient></defs>
-${tk.map(y=>`<line class="gl" x1="${L}" x2="${W-R0}" y1="${Y(y)}" y2="${Y(y)}"/><text x="${L-6}" y="${Y(y)+4}" text-anchor="end">${n0(Math.round(y))}</text>`).join("")}
+${band}${tk.map(y=>`<line class="gl" x1="${L}" x2="${W-R0}" y1="${Y(y)}" y2="${Y(y)}"/><text x="${L-6}" y="${Y(y)+4}" text-anchor="end">${n0(Math.round(y))}</text>`).join("")}
+${guides(G,lo,hi,Y,W,R0,L,1)}
 ${R.length>1?`<polygon fill="url(#gb)" points="${X(0)},${Ht-B} ${pts.join(" ")} ${X(R.length-1)},${Ht-B}"/><polyline class="ln b" points="${pts.join(" ")}"/>`:""}
 ${R.map((x,i)=>`<circle class="dt b" cx="${X(i)}" cy="${Y(x.position)}" r="${R.length>40?2.5:4}"><title>${fd(x.date,{day:"2-digit",month:"long",year:"numeric"})} : ${n0(x.position)}e${x.cat?" ("+esc(x.cat)+")":""}</title></circle>`).join("")}
 ${lab.map(i=>`<text x="${X(i)}" y="${Ht-8}" text-anchor="${R.length<2?"middle":i==0?"start":i==R.length-1?"end":"middle"}">${fd(R[i].date,sd)}</text>`).join("")}
 <text class="lv b" x="${X(R.length-1)}" y="${Y(cur)-10}" text-anchor="${R.length<2?"middle":"end"}">${n0(cur)}e</text></svg>
 <div class="rs"><div><span>Classement actuel</span><b style="color:#8ea2ff">${n0(cur)}</b>${c?`<span class="cb" style="display:inline-block">${esc(c)}</span>`:""}</div><div class="r"><span>vs précédent</span><b>${vs}</b></div>
 <div><span>Meilleur classement</span><b>${n0(Math.min(...v))}</b></div><div class="r"><span>Pire classement</span><b>${n0(Math.max(...v))}</b></div></div>
+${G&&G.all.length?`<p class="nt">Pointillés dorés = dernière place de chaque palier (au-dessus de la ligne = ce classement ou mieux).</p>`:""}
 ${R.length<2?`<p class="nt">L'historique se construit automatiquement : la position est relevée chaque jour.</p>`:""}</div>`}
+// Échelle des paliers : où se situe le joueur et combien de places / points le séparent des classements voisins.
+let allT=false;
+function ladder(Lm,pos,pts,i){const sp=n=>n>0?"+"+f2(n):f2(n),pl=n=>n0(n)+(n>1?" places":" place");
+const row=(l,j)=>{let g="",k=j<i?"up":j>i?"dn":"me";
+if(j<i){const dp=pos-l.lastPosition,dpt=l.points!=null&&pts!=null?l.points-pts:null;g=`${dpt!=null?(dpt>0?"+"+f2(dpt)+" pts":"≈ atteint"):"–"}<small>gagner ${pl(dp)}</small>`}
+else if(j==i){const up=Lm[j-1],dn=l;g=`Vous êtes ici<small>${dn.points!=null&&pts!=null?"marge "+f2(Math.max(0,pts-dn.points))+" pts · ":""}${pl(dn.lastPosition-pos)} d'avance</small>`}
+else{const b=Lm[j-1],dpt=b.points!=null&&pts!=null?pts-b.points:null;g=`${dpt!=null?"−"+f2(Math.max(0,dpt))+" pts":"–"}<small>si ${pl(b.lastPosition-pos+1)} perdues</small>`}
+return `<div class="t ${k}"><span class="c">${esc(l.cat)}</span><span>jusqu'à la ${n0(l.lastPosition)}e place<br><span class="sub">${l.points!=null?"≥ "+f2(l.points)+" pts":"tous les actifs"}</span></span><span class="g">${g}</span></div>`};
+const near=Lm.map((l,j)=>[l,j]).filter(([,j])=>allT||Math.abs(j-i)<=2);
+return `<div class="lad">${near.map(([l,j])=>row(l,j)).join("")}<button class="mo" onclick="allT=!allT;draw()">${allT?"Afficher seulement les paliers proches":"Voir tous les paliers (A → E6)"}</button></div>`}
 const dl=n=>n>0?`<span class="up">+${f2(n)}</span>`:n<0?`<span class="dn">${f2(n)}</span>`:`<span class="eq">0</span>`;
 function fiche(){const p=(PL.players||[]).find(x=>x.licence==sel)||{name:"",licence:sel},f=PF[sel]||{loading:1};
 let h=`<div class="pf"><button class="bk" onclick="closeP()">◀ Classement</button><h2>${esc(p.name||f.name)}</h2><span class="sub">${p.cat?esc(p.cat)+" · ":""}Licence ${esc(sel)}${p.rank?" · n° "+p.rank+" du classement":""}</span>`;
@@ -177,7 +203,16 @@ if(f.loading)return h+`<p class="sub">Chargement de la fiche AFTT…</p></div>`;
 if(f.error)return h+`<p class="sub">${esc(f.error)} <button onclick="delete PF['${esc(sel)}'];openP('${esc(sel)}')">Réessayer</button></p></div>`;
 const H=f.history||[],v=H.map(x=>x.points),cur=v.length?v[v.length-1]:p.points||0,e=v.length?cur-v[0]:0;
 h+=`<div class="kp"><div><span>Actuel</span><b class="pt">${f2(cur)}</b></div><div><span>Évolution</span><b>${dl(e)}</b></div><div><span>Plus haut</span><b>${v.length?f2(Math.max(...v)):"–"}</b></div><div><span>Plus bas</span><b>${v.length?f2(Math.min(...v)):"–"}</b></div></div>`;
-h+=`<div class="charts"><div><h3>Évolution des points</h3>${chart(H)}</div><div><h3>Évolution du classement</h3>${rchart(f.ranks||[])}</div></div>`;
+const RK=f.ranks||[],LI=f.limits||{},Lm=(LI.limits||[]).filter(l=>l.cat!="NC"),pos=RK.length?RK[RK.length-1].position:f.position||0,mp=p.points!=null?p.points:v.length?cur:null;
+const ti=pos&&Lm.length?Lm.findIndex(l=>pos<=l.lastPosition):-2,need=ti>=0?[Lm[ti-1],Lm[ti]].filter(Boolean):[];
+const GP=Lm.length?{all:Lm.filter(l=>l.points!=null).map(l=>({v:l.points,t:l.cat})),need:need.filter(l=>l.points!=null).map(l=>l.points)}:null;
+const GR=Lm.length?{all:Lm.map(l=>({v:l.lastPosition,t:l.cat})),need:need.map(l=>l.lastPosition)}:null;
+const PB=ti>=0?{top:ti>0?Lm[ti-1].lastPosition:1,bottom:Lm[ti].lastPosition}:null;
+h+=`<div class="charts"><div><h3>Évolution des points</h3>${chart(H,GP)}</div><div><h3>Évolution du classement</h3>${rchart(RK,GR,PB)}</div></div>`;
+if(ti>=0){const P=Lm[ti],U=Lm[ti-1];
+h+=`<h3>Paliers de classement</h3><div class="pal"><div><span>Palier actuel</span><b class="pt">${esc(P.cat)}</b>${p.cat||f.cat?` <span class="sub" style="display:inline">(classement de la saison : ${esc(p.cat||f.cat)})</span>`:""}</div>${U?`<div><span>Vers ${esc(U.cat)}</span><b class="up">${U.points!=null&&mp!=null?"+"+f2(Math.max(0,U.points-mp))+" pts":"–"}</b> <span class="sub" style="display:inline">· ${n0(pos-U.lastPosition)} places</span></div>`:""}${Lm[ti+1]?`<div><span>Avant ${esc(Lm[ti+1].cat)}</span><b class="dn">${P.points!=null&&mp!=null?"−"+f2(Math.max(0,mp-P.points))+" pts":"–"}</b> <span class="sub" style="display:inline">· ${n0(P.lastPosition-pos)} places</span></div>`:""}</div>`+ladder(Lm,pos,mp,ti)+
+`<p class="warn">Paliers d'après le tableau d'équivalence officiel AFTT 2026-2027 : ${n0(LI.actives)} joueurs actifs → tranche ${n0(11750+500*Math.min(16,Math.max(0,Math.floor((LI.actives-11750)/500))))} à ${n0(12249+500*Math.min(16,Math.max(0,Math.floor((LI.actives-11750)/500))))}. Points des paliers = points du dernier joueur à l'intérieur du palier au classement numérique du ${new Date(LI.day+"T12:00:00").toLocaleDateString("fr-BE")}. Estimation indicative : le classement définitif est fixé par l'AFTT en fin de saison.</p>`}
+else if(ti==-2&&pos&&!Lm.length)h+=`<p class="sub">Les paliers de classement sont en cours de calcul, revenez dans quelques minutes.</p>`;
 const D2=f.days||[];
 if(D2.length)h+=`<h3>Matchs de la saison</h3>`+D2.map(d=>`<div class="day"><h4><span>${esc(d.date)} · ${esc(d.club)}</span>${dl(d.total)}</h4>${d.matches.map(m=>`<div class="m"><span>${esc(m.opponent)}<br><span class="sub">${esc(m.ranking)}${m.opponentPoints?" · "+f2(m.opponentPoints)+" pts":""}${m.women?" · Dames":""}</span></span><b>${esc(m.score)}</b><span class="d">${dl(m.delta)}</span></div>`).join("")}</div>`).join("");
 else h+=`<p class="sub">Aucun match enregistré cette saison.</p>`;
