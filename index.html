@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Royal Raquette Rouge Basècles</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#141416;--card:#222226;--alt:#1b1b1e;--tx:#f2f2f2;--mu:#9a9aa0;--red:#b01010;--gold:#f0be5a;--ok:#3cc85a;--ko:#ff5050;--nul:#d98a0b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f4f6;--card:#fff;--alt:#f0f0f3;--tx:#18181b;--mu:#666;--gold:#a56a00;--ok:#1b8a2e;--ko:#d62020;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f4f4f6;--card:#fff;--alt:#f0f0f3;--tx:#18181b;--mu:#666;--gold:#a56a00;--ok:#1b8a2e;--ko:#d62020;color-scheme:light}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px system-ui,Arial,sans-serif;max-width:720px;margin:auto;padding:0 10px 30px}
+header{text-align:center;padding:18px 0 8px}h1{margin:0;font-size:30px;font-style:italic;letter-spacing:1px;text-shadow:0 0 14px #f22}
+header small{display:block;color:var(--mu);margin-top:4px}
+nav{display:flex;gap:6px;margin:10px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0;z-index:5}
+nav button{flex:1;padding:10px 2px;border:0;border-radius:8px;background:var(--card);color:var(--tx);font-weight:700;font-size:13px}
+nav button.on{background:var(--red);color:#fff}
+.row{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;background:var(--card);margin-bottom:4px}
+.row:nth-child(even){background:var(--alt)}.rk{width:26px;text-align:center;color:var(--mu)}.nm{flex:1;font-weight:700}
+.pt{color:var(--gold);font-weight:700}.ev{width:76px;text-align:right;font-weight:700}.up{color:var(--ok)}.dn{color:var(--ko)}.eq{color:var(--mu)}
+.sub{font-size:12px;color:var(--mu);font-weight:400}.tog{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tog button{padding:6px 12px;border-radius:20px;border:1px solid var(--mu);background:none;color:var(--tx)}.tog button.on{background:var(--red);border-color:var(--red);color:#fff}
+.res{border-left:6px solid;margin-bottom:6px;padding:10px;border-radius:8px;background:var(--card);display:flex;justify-content:space-between;gap:8px}
+.V{border-color:var(--ok)}.D{border-color:var(--ko)}.N{border-color:var(--nul)}.F{border-color:#888}
+.sc{font-weight:800;font-size:18px;color:var(--gold);text-align:right}.hon{display:grid;gap:6px;margin-top:12px}.hon div{background:var(--card);padding:10px;border-radius:8px;border-bottom:3px solid var(--red)}
+.warn{color:var(--mu);font-size:12px;margin-top:10px}
+.wk{display:flex;align-items:center;gap:6px;margin-bottom:8px}.wk button{padding:9px 14px;border-radius:8px;border:1px solid var(--mu);background:var(--card);color:var(--tx);font-weight:700}.wk button:disabled{opacity:.35}.wk span{flex:1;text-align:center;font-weight:700}
+.ov{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-bottom:12px}.ov button{text-align:left;padding:10px;border-radius:8px;border:1px solid transparent;background:var(--card);color:var(--tx);font:inherit}.ov button.on{border-color:var(--red)}.ov b{display:block}.ov .big{font-size:22px;font-weight:800;color:var(--gold)}
+table.cl{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;font-size:14px}.cl th{background:var(--red);color:#fff;padding:8px 4px;font-size:12px}.cl td{padding:8px 4px;text-align:center;border-top:1px solid var(--alt)}.cl td.t{text-align:left}.cl tr.me td{background:rgba(176,16,16,.22);font-weight:700}.cl td.p{color:var(--gold);font-weight:800}
+.mt{display:flex;gap:8px;padding:8px 10px;background:var(--card);border-radius:8px;margin-bottom:4px;font-size:14px}.mt span{flex:1}.mt span:last-child{text-align:right}.mt b{color:var(--gold);min-width:70px;text-align:center}
+@media (max-width:420px){.cl .x{display:none}}
+.rh{text-align:center;margin:8px 0 12px}.rh h2{margin:0;font-size:46px;font-style:italic;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,var(--tx) 45%,#ff9e9e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rh .wk{justify-content:center;margin:4px 0 0}.rh .wk span{flex:0 1 auto;min-width:170px;color:var(--gold);font-size:20px;font-weight:800}.rh .wk span .sub{display:block;font-size:12px}
+table.rt{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed;font-size:15px;margin:0 -3px;width:calc(100% + 6px)}
+.rt th{background:#c41818;color:#fff;padding:9px 2px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.rt td{background:var(--card);padding:6px 4px;height:52px;text-align:center;font-weight:800;overflow:hidden;text-overflow:ellipsis}
+.rt td.dv{--c:#999;color:var(--c);font-style:italic;text-transform:uppercase;box-shadow:inset -4px 0 0 var(--c);background:linear-gradient(135deg,color-mix(in srgb,var(--c) 24%,var(--card)),var(--card))}
+.rt td.op{--op:#8cc4ff;color:var(--op);font-size:13px;background:var(--alt)}:root[data-theme="light"] .rt td.op{--op:#1d5fae}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .rt td.op{--op:#1d5fae}}
+.rt td.sc{color:var(--gold);font-size:20px;white-space:nowrap}.rt td.sc small{display:block;font-size:11px;white-space:normal;line-height:1.3}
+.rt td.r{color:#fff;font-size:24px;line-height:1}.rt td.r.V{background:#22a03c}.rt td.r.N{background:#d98a0b}.rt td.r.D{background:#d82020}.rt td.r.F{background:#7a7a7a}.rt td.r.U{background:var(--alt);color:var(--mu);font-size:16px}
+.rt td.ck span{display:inline-block;min-width:44px;border:2px solid #d82020;border-radius:7px;padding:2px 6px;color:var(--gold);background:rgba(0,0,0,.25);font-size:17px}.rt td.ck span.first{border-color:var(--gold)}.rt td.ck sup{font-size:10px;vertical-align:-2px}
+.rt .loc{display:block;width:max-content;max-width:100%;margin:4px auto 0;padding:1px 7px;border-radius:9px;font-size:10px;font-style:normal;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#fff}.rt .loc.h{background:#1f8a4c}.rt .loc.a{background:#5a6170}
+.rt .s{display:none}.lgd{display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px 14px;margin:14px 0 6px;font-size:16px}.lgd i{display:inline-block;width:15px;height:15px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.rsec{margin:22px 0 6px;font-style:italic;font-weight:900;text-transform:uppercase;display:inline-block;background:#c41818;color:#fff;padding:5px 18px;clip-path:polygon(6% 0,100% 0,94% 100%,0 100%)}
+@media (max-width:560px){.rh h2{font-size:36px}table.rt{font-size:12px;border-spacing:2px;margin:0 -2px;width:calc(100% + 4px)}.rt th{font-size:9px;padding:7px 1px;letter-spacing:0}.rt td{padding:5px 2px;height:46px}.rt td.op{font-size:11px;white-space:normal;overflow-wrap:anywhere;line-height:1.2}.rt td.sc{font-size:14px}.rt .loc{font-size:8px;padding:1px 4px;margin-top:3px}.rt td.sc small{font-size:9px}.rt td.r{font-size:18px}.rt td.ck span{min-width:0;font-size:13px;padding:1px 4px}.rt .l{display:none}.rt .s{display:inline}.lgd{font-size:14px}}
+</style></head><body>
+<header><h1>H297</h1><b>Royal Raquette Rouge Basècles</b><small>Tennis de table · saison 2026-2027</small></header>
+<nav id="nav"></nav><main id="m"></main>
+<script>
+const P=[["Noa Sanna",0,0,1742.45,0],["Julien Druart",19,46.6,1234.31,2796],["Guillaume Sanna",8,37.2,1185.52,0],["Thomas Vanwerte",0,0,1170,0],["Philippe Riviere",7,33.2,1155.41,0],["Christophe Sauvage",0,0,1110.2,0],["Lukas Druart",0,0,1100.59,0],["Ryan Baudoin",19,99.2,1090.84,3764],["Gildo Virgilio",14,47.4,1073.8,3887],["Sebastien Schlossmacher",38,133.12,1033.9,4179],["Louis Schoovaerts",24,69.8,1015.78,4316],["Jerome Vandeputte",30,54.23,943.01,4902],["Sylvain Laurent",17,205.2,935.2,4982],["Kevin Clais",18,20.1,918.56,5131],["Christian Hermans",15,-42.3,903.71,5266],["Walter Laurent",36,-45.62,903.33,5270],["Giovanni Persichillo",27,-81.53,894.65,5338],["Christian Vandeputte",12,1.6,885.93,5414],["Fabio Virgilio",12,-44.8,765.38,6503],["Valentino Virgilio",24,95.6,735.45,6765],["Daniel Gosselin",30,-78.47,659.78,7438],["Noah Caufriez",24,117.2,616.61,7842],["Alex Buffe",12,61.2,590.48,8055],["Richard Roucour",24,-38.6,555.81,8373],["Alain Medina",0,0,478.55,0],["Antonin Druart",16,-48.8,437.25,9438],["Baptiste Goovers",12,-6.4,423.57,9555],["Maxence Mahieu",16,0.6,422.14,9572],["Bernard Ducrotois",19,2.6,401.32,9751],["Sarah Debauve",7,37.2,394.4,0],["Eric Mereau",12,-16.4,363.6,10160],["Leonie Schoovaerts",19,93.2,345.9,10332],["Gael Betermier",0,0,323.11,0],["Lucie Schoovaerts",20,-3.2,142.15,12172],["Amelie Lenglez",12,-16.8,138.05,12220],["Louis Clin",0,0,92.74,0],["Vinziane Bruyere",6,-6.4,43.6,0],["Fanny Mahieu",10,-7.2,42.8,13236]];
+const D="19/09 26/09 03/10 10/10 17/10 31/10 07/11 14/11 28/11 05/12 12/12 16/01 23/01 30/01 13/02 20/02 06/03 13/03 27/03 10/04 17/04 24/04".split(" ");
+const B0="R.R. Basècles A";const M=[["Neufvilles Senn…",B0,"","","5-5"],[B0,"Don Bosco C","","","6-4"],["Saint-Piat A",B0,"","","2-8"],[B0,"Palette Huissig…","","","9-1"],[B0,"Braine A","","","10-0"],["Allain A",B0,"","","7-3"],[B0,"Gpv Ath A","","","8-2"],["Papignies A",B0,"05/11","19:30",""],[B0,"Hyon - Cuesme…","12/11","19:30",""],[B0,"Rppc Pecq A","19/11","19:30",""],["Dynamic Flenu B",B0,"26/11","19:00",""],["Gpv Ath A",B0,"14/01","19:30",""],[B0,"Allain A","21/01","19:30",""],["Braine A",B0,"28/01","20:00",""],["Palette Huissig…",B0,"03/02","19:00",""],[B0,"Saint-Piat A","11/02","19:30",""],["Don Bosco C",B0,"17/02","20:00",""],[B0,"Neufvilles Senn…","04/03","19:30",""],[B0,"Papignies A","11/03","19:30",""],["Hyon - Cuesme…",B0,"17/03","20:00",""],["Rppc Pecq A",B0,"25/03","19:00",""],[B0,"Dynamic Flenu B","01/04","19:30",""]];
+const M3=[[B0,"Palette Huissig…","","","9-7"],["Gpv Ath D",B0,"","","16-0"],[B0,"Don Bosco E","","","6-10"],[B0,"Allain D","","","ff"],["Peissant-Veller…",B0,"","","2-14"],[B0,"Les Templiers C","","","10-6"],["Allain D",B0,"","","ff"],["Saint-Piat D",B0,"07/11","19:00",""],["Neufvilles Senn…",B0,"14/11","19:00",""],[B0,"Bon-Secours E","28/11","19:00",""],[B0,"Royal Trefle Le…","05/12","19:00",""],["Colfontaine-Fle…",B0,"12/12","19:00",""],["Les Templiers C",B0,"16/01","19:00",""],[B0,"Peissant-Veller…","23/01","19:00",""],["Don Bosco E",B0,"13/02","19:00",""],[B0,"Gpv Ath D","20/02","19:00",""],["Palette Huissig…",B0,"27/02","19:00",""],[B0,"Saint-Piat D","13/03","19:00",""],[B0,"Neufvilles Senn…","27/03","19:00",""],["Bon-Secours E",B0,"10/04","19:30",""],["Royal Trefle Le…",B0,"17/04","19:00",""],[B0,"Colfontaine-Fle…","24/04","19:00",""]];
+const mk=(T,L)=>L.split("\n").map(l=>{const[s,o,d,h,c]=l.split("|");return s=="H"?[T,o,d||"",h||"",c||""]:[o,T,d||"",h||"",c||""]});
+const TEAMS={"Vétérans A":M,"P3 A":M3,
+"P3 B":mk("R.R. Basècles B",`H|Palette Huissig…|||11-5
+A|Colfontaine-Fle…|||12-4
+H|Snooping B|||3-13
+H|Dour B|||9-7
+A|Les Templiers B|||15-1
+H|Vaulx A|||0-16
+A|Antoing A|07/11|19:00
+A|Allain B|14/11|19:00
+H|Wodecq A|28/11|19:00
+H|Hyon - Cuesme…|05/12|19:00
+A|Palette Villoise…|12/12|19:00
+A|Vaulx A|16/01|19:00
+H|Les Templiers B|23/01|19:00
+A|Dour B|30/01|19:00
+A|Snooping B|13/02|19:00
+H|Colfontaine-Fle…|20/02|19:00
+A|Palette Huissig…|27/02|19:00
+H|Antoing A|13/03|19:00
+H|Allain B|27/03|19:00
+A|Wodecq A|10/04|19:30
+A|Hyon - Cuesme…|17/04|19:00
+H|Palette Villoise…|24/04|19:00`),
+"P4 C":mk("R.R. Basècles C",`H|Palette Huissig…|||6-10
+A|Gpv Ath E|||12-4
+H|CP Montois G|||6-10
+H|Hyon - Cuesme…|||12-4
+A|CP Montois I|||11-5
+H|Bon-Secours H|||7-9
+A|Colfontaine-Fle…|07/11|15:00
+A|Hyon - Cuesme…|14/11|15:00
+H|Dour C|28/11|19:00
+H|Cajmir H|05/12|19:00
+A|Dynamic Flenu B|12/12|19:00
+A|Bon-Secours H|16/01|15:00
+H|CP Montois I|23/01|19:00
+A|Hyon - Cuesme…|30/01|15:00
+A|CP Montois G|12/02|20:00
+H|Gpv Ath E|20/02|19:00
+A|Palette Huissig…|27/02|19:00
+H|Colfontaine-Fle…|13/03|19:00
+H|Hyon - Cuesme…|27/03|19:00
+A|Dour C|10/04|19:00
+A|Cajmir H|17/04|15:00
+H|Dynamic Flenu B|24/04|19:00`),
+"P5 D":mk("R.R. Basècles D",`H|Palette Huissig…|||6-10
+A|Palette Leuzois…|||15-1
+H|Acren E|||7-9
+H|Royal Trefle Len…|||10-6
+A|Hensies A|||14-2
+H|Lanh-Manh Wi…|||3-13
+A|Dour D|07/11|15:00
+A|Bon-Secours I|14/11|14:00
+H|Wodecq C|28/11|15:00
+H|Anvinoise A|05/12|15:00
+A|Palette De Blicq…|12/12|14:00
+A|Lanh-Manh Wi…|16/01|15:00
+H|Hensies A|23/01|15:00
+A|Royal Trefle Le…|30/01|17:00
+A|Acren E|13/02|15:00
+H|Palette Leuzois…|20/02|15:00
+A|Palette Huissig…|27/02|15:00
+H|Dour D|13/03|15:00
+H|Bon-Secours I|27/03|15:00
+A|Wodecq C|10/04|15:30
+A|Anvinoise A|17/04|14:00
+H|Palette De Blicq…|24/04|15:00`),
+"P6 E":mk("R.R. Basècles E",`H|Gpv Ath O|||15-1
+A|Gpv Ath L|||9-7
+H|Acren H|||7-9
+A|Hensies B|||15-1
+A|Bon-Secours L|07/11|14:00
+A|Neufvilles Senn…|14/11|09:30
+H|Wodecq D|28/11|15:00
+H|Royal Trefle Le…|05/12|15:00
+A|Palette Villoise…|12/12|15:00
+H|Hensies B|23/01|15:00
+A|Acren H|13/02|15:00
+H|Gpv Ath L|20/02|15:00
+A|Gpv Ath O|06/03|14:30
+H|Bon-Secours L|13/03|15:00
+H|Neufvilles Senn…|27/03|15:00
+A|Wodecq D|10/04|15:30
+A|Royal Trefle Le…|17/04|13:00
+H|Palette Villoise…|24/04|15:00`),
+"P6 F":mk("R.R. Basècles F",`H|Gpv Ath P|||ff
+A|Royal Trefle Le…|||ff
+A|Acren J|||ff
+A|Gpv Ath M|||ff
+H|Acren G|||ff
+H|Papignies C|||ff
+H|Cajmir M|||ff
+A|Hensies C|||ff
+A|Palette Villoise…|||ff
+H|Hensies C|||ff
+A|Cajmir M|||ff
+A|Acren G|||ff
+H|Gpv Ath M|||ff
+A|Gpv Ath P|||ff
+H|Royal Trefle Le…|||ff
+H|Acren J|||ff
+A|Papignies C|||ff
+H|Palette Villoise…|||ff`),
+"Dames A":mk("R.R. Basècles A",`H|CP Montois B|||0-10
+A|Palette Leuzois…|||7-3
+H|Hyon - Cuesme…|||0-10
+H|Kitch Mouscro…|||1-9
+A|Royal Trefle Le…|||9-1
+H|Saint-Piat A|||4-6
+A|Thuin C|06/11|20:00
+A|Neufvilles Senn…|14/11|10:00
+H|Gerpinnes C|28/11|13:00
+H|Bon-Secours A|05/12|13:00
+A|Dour B|12/12|10:00
+A|Saint-Piat A|16/01|10:00
+H|Royal Trefle Le…|23/01|13:00
+A|Kitch Mouscro…|29/01|20:00
+A|Hyon - Cuesme…|13/02|10:00
+H|Palette Leuzois…|20/02|10:00
+A|CP Montois B|06/03|10:00
+H|Thuin C|13/03|13:00
+H|Neufvilles Senn…|27/03|13:00
+A|Gerpinnes C|10/04|10:00
+A|Bon-Secours A|17/04|10:00
+H|Dour B|24/04|13:00`)};let team="Vétérans A";
+const TABS=["Classement joueurs","Résultats","Matchs","Équipes"];let tab=0,sort="pts";
+const CL={};let cw=0,cd=0,rw=0;
+const isMe=t=>/Basecles|Basècles/i.test(t);
+const short=t=>t.replace(/^Division\s*/,"").replace(/\s*-\s*Prov\. Hainaut\s*-\s*/," · ");
+function curWeek(){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate());const k=D.filter(d=>{const[a,b]=d.split("/").map(Number);return new Date(b>=9?2026:2027,b-1,a)<t}).length;return Math.min(22,Math.max(1,k))}
+function loadCL(w){if(CL[w])return;CL[w]={loading:1};fetch("/api/classement?semaine="+w).then(r=>r.json()).then(j=>{CL[w]=j}).catch(()=>{CL[w]={error:"Connexion impossible."}}).finally(()=>{if((tab==3&&cw==w)||(tab==1&&(rw==w||rw+1==w)))draw()})}
+function equipes(){if(!cw)cw=curWeek();loadCL(cw);const c=CL[cw];
+let h=`<div class="wk"><button ${cw<=1?"disabled":""} onclick="cw--;draw()">◀</button><span>Semaine ${cw}</span><button ${cw>=22?"disabled":""} onclick="cw++;draw()">▶</button></div>`;
+if(c.loading)return h+`<p class="sub">Chargement des classements AFTT…</p>`;
+if(c.error)return h+`<p class="sub">${c.error} <button onclick="delete CL[${cw}];draw()">Réessayer</button></p>`;
+const dv=c.divisions;if(cd>=dv.length)cd=0;
+h+=`<h3>Nos équipes</h3><div class="ov">${dv.map((d,i)=>{const r=d.rows.find(x=>isMe(x.team))||{};return `<button class="${i==cd?"on":""}" onclick="cd=${i};draw()"><span class="sub">${short(d.title)}</span><b>${(r.team||"").replace(/^Raquette Rouge Basecles\s*/,"Basècles ")}</b><span class="big">${r.rank?r.rank+"<small>e</small>":"–"}</span> <span class="sub">/ ${d.rows.length} · ${r.points??0} pts</span></button>`}).join("")}</div>`;
+const d=dv[cd];
+h+=`<h3>${d.title}</h3><table class="cl"><tr><th>#</th><th class="t">Équipe</th><th>J</th><th class="x">G</th><th class="x">P</th><th class="x">N</th><th>FF</th><th>Pts</th></tr>${d.rows.map(r=>`<tr class="${isMe(r.team)?"me":""}"><td>${r.rank}</td><td class="t">${r.team}</td><td>${r.played}</td><td class="x">${r.won}</td><td class="x">${r.lost}</td><td class="x">${r.draw}</td><td>${r.ff}</td><td class="p">${r.points}</td></tr>`).join("")}</table>`;
+return h+`<p class="warn">Données officielles AFTT (data.aftt.be), mises à jour automatiquement. Classement après la semaine ${cw}.</p>`}
+const nrm=t=>t.normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/…/g,"").toLowerCase().trim();
+const tkey=(d,me)=>{const t=d.title,L=(me.match(/\s([A-Z])$/)||[])[1]||"A";if(/Vétérans|Veterans/i.test(t))return "Vétérans "+L;if(/Dames/i.test(t))return "Dames "+L;const n=(t.match(/Division\s*(\d)/)||[])[1];return "P"+n+" "+L};
+function mDate(k,opp,w){const T=TEAMS[k];if(T){const o=nrm(opp),x=T.find(x=>x[2]&&[x[0],x[1]].some(n=>!n.startsWith("R.R. Bas")&&o.startsWith(nrm(n))));if(x){const[a,b]=x[2].split("/").map(Number),dt=new Date(b>=9?2026:2027,b-1,a);return dt.toLocaleDateString("fr-BE",{weekday:"short",day:"2-digit",month:"2-digit"})+(x[3]?" · "+x[3]:"")}}const[a,b]=D[w-1].split("/").map(Number);return "Semaine du "+new Date(b>=9?2026:2027,b-1,a).toLocaleDateString("fr-BE",{day:"2-digit",month:"2-digit"})}
+const isVet=d=>/Vétérans|Veterans/i.test(d.title);
+// Les vétérans ont une semaine d'avance : la semaine W des autres équipes correspond à la semaine W+1 des vétérans.
+const DIVC={"Vétérans":"#f0b400","P1":"#ff4d4d","P2":"#ff6a3d","P3":"#ff8a1f","P4":"#3d9cff","P5":"#1fd1a0","P6":"#b06cff","Dames":"#ff5fa8"},DIVO=Object.keys(DIVC);
+const dsplit=k=>{const i=k.lastIndexOf(" ");return[k.slice(0,i),k.slice(i+1)]};
+function resultats(){if(!rw)rw=curWeek();const vw=rw<22?[rw+1]:[];if(rw==1)vw.unshift(1);[rw,...vw].forEach(loadCL);const ws=[rw,...vw].map(w=>CL[w]),c=ws.find(x=>x.loading||x.error)||{divisions:[...CL[rw].divisions.filter(d=>!isVet(d)),...vw.flatMap(w=>CL[w].divisions.filter(isVet))]};
+let h=`<div class="rh"><h2>RÉSULTATS</h2><div class="wk"><button ${rw<=1?"disabled":""} onclick="rw--;draw()">◀</button><span>${rw}${rw==1?"ère":"ème"} semaine<span class="sub">${D[rw-1]}</span></span><button ${rw>=22?"disabled":""} onclick="rw++;draw()">▶</button></div></div>`;
+if(c.loading)return h+`<p class="sub">Chargement des résultats AFTT…</p>`;
+if(c.error)return h+`<p class="sub">${c.error} <button onclick="for(const w in CL)if(CL[w].error)delete CL[w];draw()">Réessayer</button></p>`;
+const L=[];c.divisions.forEach(d=>d.matches.filter(m=>isMe(m.home)||isMe(m.away)).forEach(m=>{const me=isMe(m.home)?m.home:m.away,opp=isMe(m.home)?m.away:m.home,s=m.score||"",ff=/\bff\b|\bfg\b|forfait/i.test(s),n=s.match(/(\d+)\s*-\s*(\d+)/);
+let r="";if(ff)r="F";else if(n){const a=+n[1],b=+n[2],e=isMe(m.home)?a-b:b-a;r=e>0?"V":e<0?"D":"N"}
+const k=tkey(d,me),rk=(d.rows.find(x=>isMe(x.team))||{}).rank;L.push({d,m,me,opp,s,n,r,k,rk})}));
+if(!L.length)return h+`<p class="sub">Aucun match de nos équipes cette semaine.</p>`;
+const ord=k=>{const[v]=dsplit(k),i=DIVO.indexOf(v);return(i<0?99:i)+k};L.sort((a,b)=>ord(a.k).localeCompare(ord(b.k)));
+const up=L.filter(x=>!x.r),pl=L.filter(x=>x.r),nb=k=>pl.filter(x=>x.r==k).length;
+const IC={V:"✓",N:"=",D:"✗",F:"–"};
+const row=x=>{const[dv,lt]=dsplit(x.k),col=DIVC[dv]||"#999",sh=dv=="Vétérans"?"Vét.":dv;
+return `<tr><td class="dv" style="--c:${col}"><span class="l">${dv}</span><span class="s">${sh}</span></td><td><span class="l">Basècles </span>${lt}</td><td class="op">${x.opp}<span class="loc ${isMe(x.m.home)?"h":"a"}">${isMe(x.m.home)?`<span class="l">🏠 Domicile</span><span class="s">🏠 Dom.</span>`:`<span class="l">✈ Extérieur</span><span class="s">✈ Ext.</span>`}</span></td><td class="sc">${x.r?(x.r=="F"?`<small>Forfait</small>`:x.n[1]+" - "+x.n[2]):`<small>${mDate(x.k,x.opp,rw)}</small>`}</td><td class="r ${x.r||"U"}">${x.r?IC[x.r]:"…"}</td><td class="ck">${x.rk?`<span class="${x.rk==1?"first":""}">${x.rk}<sup>${x.rk==1?"er":"e"}</sup></span>`:"–"}</td></tr>`};
+const tbl=a=>`<table class="rt"><colgroup><col style="width:17%"><col style="width:16%"><col style="width:28%"><col style="width:15%"><col style="width:11%"><col style="width:13%"></colgroup><tr><th><span class="l">Division</span><span class="s">Div.</span></th><th><span class="l">Équipe</span><span class="s">Éq.</span></th><th><span class="l">Adversaire</span><span class="s">Adv.</span></th><th>Score</th><th>Rés.</th><th><span class="l">Class.</span><span class="s">Cl.</span></th></tr>${a.map(row).join("")}</table>`;
+const lg=(col,n,t)=>`<span><i style="background:${col}"></i>${n} ${t}</span>`;
+if(pl.length)h+=tbl(pl)+`<div class="lgd">${lg("#22a03c",nb("V"),nb("V")>1?"victoires":"victoire")}${lg("#d98a0b",nb("N"),nb("N")>1?"nuls":"nul")}${lg("#d82020",nb("D"),nb("D")>1?"défaites":"défaite")}${nb("F")?lg("#7a7a7a",nb("F"),nb("F")>1?"forfaits":"forfait"):""}</div>`;
+if(up.length)h+=`<div class="rsec">À venir</div>`+tbl(up);
+return h+`<p class="warn">Données officielles AFTT (data.aftt.be). Les vétérans ayant une semaine d'avance, leur semaine N+1 est affichée avec la semaine N des autres équipes.</p>`}
+const ev=e=>e>0?`<span class="up">▲ +${e.toFixed(2)}</span>`:e<0?`<span class="dn">▼ ${e.toFixed(2)}</span>`:`<span class="eq">= 0</span>`;
+function draw(){
+document.getElementById("nav").innerHTML=TABS.map((t,i)=>`<button class="${i==tab?"on":""}" onclick="tab=${i};draw()">${t}</button>`).join("");
+let h="";
+if(tab==0){const L=[...P].sort((a,b)=>sort=="pts"?b[3]-a[3]:b[2]-a[2]);
+h=`<div class="tog"><button class="${sort=="pts"?"on":""}" onclick="sort='pts';draw()">Par points</button><button class="${sort=="evo"?"on":""}" onclick="sort='evo';draw()">Par évolution</button></div>`+
+L.map((p,i)=>`<div class="row"><span class="rk">${i+1}</span><span class="nm">${p[0]}<br><span class="sub">${p[1]} matchs${p[4]?" · n° "+p[4]:""}</span></span><span class="pt">${p[3].toFixed(2)}</span><span class="ev">${ev(p[2])}</span></div>`).join("")+
+`<p class="warn">Situation au 1er novembre 2026. ▲▼ = évolution depuis le début de saison.</p>`}
+if(tab==1)h=resultats();
+if(tab==2){const nm=t=>t.startsWith("R.R. Bas")?`<b>${t}</b>`:t,pl=TEAMS[team].filter(x=>x[4]),up=TEAMS[team].filter(x=>!x[4]);
+const rs=x=>{if(x[4]=="ff")return "F";const s=x[4].split("-").map(Number),r=x[0].startsWith("R.R. Bas")?s[0]-s[1]:s[1]-s[0];return r>0?"V":r<0?"D":"N"};
+const wd=d=>{const[a,b]=d.split("/").map(Number);return new Date(b>=9?2026:2027,b-1,a).toLocaleDateString("fr-BE",{weekday:"short"})};
+const c=pl.map(rs),n=k=>c.filter(z=>z==k).length;
+h=`<div class="tog">${Object.keys(TEAMS).map(k=>`<button class="${k==team?"on":""}" onclick="team='${k}';draw()">${k}</button>`).join("")}</div><h3>R.R. Basècles · ${team}</h3><p class="sub">Joués : ${pl.length} · ${n("V")} victoire(s) · ${n("N")} nul · ${n("D")} défaite(s)${n("F")?" · "+n("F")+" forfait(s)":""}</p><h3>À venir</h3>`+
+up.map((x,i)=>`<div class="res F" ${i==0?'style="outline:2px solid var(--gold)"':""}><div>${nm(x[0])}<br>${nm(x[1])}</div><div class="sc">${x[2]}<br><span class="sub">${wd(x[2])} · ${x[3]}</span></div></div>`).join("")+
+`<h3>Déjà joués</h3>`+pl.map(x=>`<div class="res ${rs(x)}"><div>${nm(x[0])}<br>${nm(x[1])}</div><div class="sc">${x[4]=="ff"?"0 - 0 ff":x[4].replace("-"," - ")}</div></div>`).join("")+
+`<p class="warn">Contour doré = prochain match. Les dates des matchs déjà joués ne figuraient pas sur les captures. Noms d’équipes tronqués comme sur l’écran d’origine.</p>`}
+if(tab==3)h=equipes();
+document.getElementById("m").innerHTML=h}
+draw();
+</script></body></html>
