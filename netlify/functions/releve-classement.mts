@@ -23,6 +23,9 @@ export default async () => {
   });
   const n = await saveSnapshots(rows);
   console.log(`Relevé du classement : ${n} joueur(s) enregistré(s).`);
+  // Recalcule en arrière-plan les seuils estimés des classements lettres.
+  const site = Netlify.env.get("URL");
+  if (site) await fetch(`${site}/api/seuils-classement`, { method: "POST" }).catch((e) => console.error(e));
 };
 
 // Tous les jours à 6h UTC.
