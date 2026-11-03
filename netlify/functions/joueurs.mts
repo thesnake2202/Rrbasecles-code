@@ -1,4 +1,6 @@
 // Récupère le classement numérique des joueurs du club H297 depuis AFTT DATA.
+import { saveSnapshots } from "../../db/snapshots.js";
+
 const BASE = "https://data.aftt.be";
 const CLUB = "H297";
 
@@ -55,6 +57,10 @@ export default async () => {
   try {
     const players = parseList(await get(`${BASE}/ranking/clubs.php?indice=${CLUB}`));
     if (!players.length) throw new Error("Aucun joueur trouvé");
+    // Mémorise la position du jour de chaque joueur (historique du classement).
+    await saveSnapshots(players.map((p) => ({ licence: p.licence, position: p.rank, points: p.points, cat: p.cat }))).catch(
+      (e) => console.error(e),
+    );
     let i = 0;
     await Promise.all(
       Array.from({ length: 6 }, async () => {

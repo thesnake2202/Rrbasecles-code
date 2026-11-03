@@ -1,0 +1,106 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "d5b91a94-ed9a-4f02-93e6-df100da4d055",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "ddl": [
+    {
+      "isRlsEnabled": false,
+      "name": "ranking_snapshots",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "licence",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "ranking_snapshots"
+    },
+    {
+      "type": "date",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "day",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "ranking_snapshots"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "position",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "ranking_snapshots"
+    },
+    {
+      "type": "real",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "points",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "ranking_snapshots"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "cat",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "ranking_snapshots"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "ranking_snapshots"
+    },
+    {
+      "columns": [
+        "licence",
+        "day"
+      ],
+      "nameExplicit": false,
+      "name": "ranking_snapshots_pkey",
+      "entityType": "pks",
+      "schema": "public",
+      "table": "ranking_snapshots"
+    }
+  ],
+  "renames": []
+}

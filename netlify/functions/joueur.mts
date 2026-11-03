@@ -1,4 +1,6 @@
 // Fiche d'un joueur AFTT : historique des points (graphique d'évolution) et détail des matchs.
+import { rankHistory, saveSnapshots, today } from "../../db/snapshots.js";
+
 const BASE = "https://data.aftt.be";
 
 const decode = (s: string) =>
@@ -53,7 +55,12 @@ function parse(html: string) {
     .filter((d) => d.date && d.matches.length);
 
   const name = text((html.match(/<div class="player-identity"[\s\S]*?<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || "");
-  return { name, history, days };
+  // Position au classement numérique (sans les inactifs), ex. « 4908e ».
+  const position = num(
+    text((html.match(/<h5[^>]*>\s*Ranking\s*<\/h5>\s*<h3[^>]*>([\s\S]*?)<\/h3>/) || [])[1] || "").split("/")[0].replace(/e\b.*/, ""),
+  );
+  const cat = text((html.match(/Classement\s+Messieurs[\s\S]{0,200}?letter-ranking[^>]*>([\s\S]*?)<\/span>/) || [])[1] || "");
+  return { name, history, days, position, cat };
 }
 
 export default async (req: Request) => {
@@ -66,8 +73,19 @@ export default async (req: Request) => {
     if (!res.ok) throw new Error(`AFTT ${res.status}`);
     const data = parse(await res.text());
     if (!data.history.length && !data.days.length) throw new Error("Fiche vide");
+    // Mémorise la position du jour puis renvoie tout l'historique des positions.
+    let ranks: { date: string; position: number; cat: string }[] = [];
+    try {
+      if (data.position > 0)
+        await saveSnapshots([{ licence, position: data.position, points: data.history.at(-1)?.points, cat: data.cat }]);
+      ranks = await rankHistory(licence);
+    } catch (e) {
+      console.error(e);
+    }
+    if (data.position > 0 && !ranks.some((r) => r.date === today()))
+      ranks.push({ date: today(), position: data.position, cat: data.cat });
     return Response.json(
-      { licence, url: `${BASE}/tools/fiche.php?licenceID=${licence}`, fetchedAt: new Date().toISOString(), ...data },
+      { licence, url: `${BASE}/tools/fiche.php?licenceID=${licence}`, fetchedAt: new Date().toISOString(), ...data, ranks },
       {
         headers: {
           "Cache-Control": "public, max-age=300",
