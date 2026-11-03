@@ -1,5 +1,6 @@
 // Fiche d'un joueur AFTT : historique des points (graphique d'évolution) et détail des matchs.
 import { rankHistory, saveSnapshots, today } from "../../db/snapshots.js";
+import { latestLimits } from "../../db/limits.js";
 
 const BASE = "https://data.aftt.be";
 
@@ -75,17 +76,22 @@ export default async (req: Request) => {
     if (!data.history.length && !data.days.length) throw new Error("Fiche vide");
     // Mémorise la position du jour puis renvoie tout l'historique des positions.
     let ranks: { date: string; position: number; cat: string }[] = [];
+    let limits: Awaited<ReturnType<typeof latestLimits>> = { day: "", limits: [] };
     try {
       if (data.position > 0)
         await saveSnapshots([{ licence, position: data.position, points: data.history.at(-1)?.points, cat: data.cat }]);
       ranks = await rankHistory(licence);
+      limits = await latestLimits();
+      // Pas encore de seuils : lance leur calcul en arrière-plan (disponibles quelques minutes plus tard).
+      if (!limits.limits.length)
+        await fetch(new URL("/api/seuils-classement", req.url), { method: "POST", signal: AbortSignal.timeout(5000) }).catch(() => {});
     } catch (e) {
       console.error(e);
     }
     if (data.position > 0 && !ranks.some((r) => r.date === today()))
       ranks.push({ date: today(), position: data.position, cat: data.cat });
     return Response.json(
-      { licence, url: `${BASE}/tools/fiche.php?licenceID=${licence}`, fetchedAt: new Date().toISOString(), ...data, ranks },
+      { licence, url: `${BASE}/tools/fiche.php?licenceID=${licence}`, fetchedAt: new Date().toISOString(), ...data, ranks, limits },
       {
         headers: {
           "Cache-Control": "public, max-age=300",
