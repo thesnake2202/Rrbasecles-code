@@ -342,6 +342,8 @@ async function patchIndex() {
     ['"/api/classement?semaine="+w', '"data/classement/"+w+".json"'],
     ['"/api/joueur?licence="+encodeURIComponent(l)', '"data/joueur/"+encodeURIComponent(l)+".json"'],
   ];
+      ['Classement après la semaine ${cw}.</p>', 'Classement après la semaine ${cw}.${upd(c)}</p>'],
+    ['semaine N des autres équipes.</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
   let out = html;
   for (const [a, b] of swaps) out = out.split(a).join(b);
   if (out !== html) {
