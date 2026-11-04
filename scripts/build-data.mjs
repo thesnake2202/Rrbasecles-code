@@ -345,7 +345,8 @@ async function patchIndex() {
     ['semaine N des autres équipes.</p>', 'semaine N des autres équipes.${upd(Cl[rw])}</p>']
   ];
 
-      [Classement après la semaine ${cw}.</p>', 'Classement après la semaine ${cw}.${upd(c)}</p>'],
+      [`Classement après la semaine ${cw}.</p>`, `Classement après la semaine ${cw}.${upd(c)}</p>`],
+
     ['semaine N des autres équipes.</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
   for (const [a, b] of swaps) out = out.split(a).join(b);
   if (out !== html) {
