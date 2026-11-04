@@ -336,13 +336,16 @@ async function patchIndex() {
   } catch {
     return;
   }
-  const swaps = [
+    const swaps = [
     ['"/api/joueurs"', '"data/joueurs.json"'],
     ['"/api/matchs"', '"data/matchs.json"'],
-    ['"/api/classement?semaine="+w', '"data/classement/"+w+".json"'],
-    ['"/api/joueur?licence="+encodeURIComponent(l)', '"data/joueur/"+encodeURIComponent(l)+".json"'],
+    ['"/api/classement?semaine="+w', '"data/classement/"+w+'],
+    ['"/api/joueur?licence="+encodeURIComponent(1)', '"data/joueur/"+encodeURIComponent(1)+".json"'],
+    ['Classement après la semaine ${cw}.</p>', 'Classement après la semaine ${cw}. ${upd(Cl[rw])}</p>'],
+    ['semaine N des autres équipes.</p>', 'semaine N des autres équipes.${upd(Cl[rw])}</p>']
   ];
-      ['Classement après la semaine ${cw}.</p>', 'Classement après la semaine ${cw}.${upd(c)}</p>'],
+
+      [Classement après la semaine ${cw}.</p>', 'Classement après la semaine ${cw}.${upd(c)}</p>'],
     ['semaine N des autres équipes.</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
   for (const [a, b] of swaps) out = out.split(a).join(b);
   if (out !== html) {
