@@ -64,14 +64,14 @@ const D="19/09 26/09 03/10 10/10 17/10 31/10 07/11 14/11 28/11 05/12 12/12 16/01
 const CLUB="H297";let team="",PL=null,MT=null,sel="";const PF={};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
 const load=(u,set,t)=>{set({loading:1});fetch(u).then(r=>r.json()).then(set).catch(()=>set({error:"Connexion impossible."})).finally(()=>{if(t.includes(tab))draw()})};
-const loadPL=()=>{if(!PL)load("/api/joueurs",j=>PL=j,[0])},loadMT=()=>{if(!MT)load("/api/matchs",j=>MT=j,[1,2])};
+const loadPL=()=>{if(!PL)load("data/joueurs.json",j=>PL=j,[0])},loadMT=()=>{if(!MT)load("data/matchs.json",j=>MT=j,[1,2])};
 const upd=j=>j&&j.fetchedAt?" Dernière mise à jour : "+new Date(j.fetchedAt).toLocaleString("fr-BE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})+".":"";
 const TABS=["Classement joueurs","Résultats","Matchs","Équipes"];let tab=0,sort="pts";
 const CL={};let cw=0,cd=0,rw=0;
 const isMe=t=>/Basecles|Basècles/i.test(t);
 const short=t=>t.replace(/^Division\s*/,"").replace(/\s*-\s*Prov\. Hainaut\s*-\s*/," · ");
 function curWeek(){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate());const k=D.filter(d=>{const[a,b]=d.split("/").map(Number);return new Date(b>=9?2026:2027,b-1,a)<t}).length;return Math.min(22,Math.max(1,k))}
-function loadCL(w){if(CL[w])return;CL[w]={loading:1};fetch("/api/classement?semaine="+w).then(r=>r.json()).then(j=>{CL[w]=j}).catch(()=>{CL[w]={error:"Connexion impossible."}}).finally(()=>{if((tab==3&&cw==w)||(tab==1&&(rw==w||rw+1==w)))draw()})}
+function loadCL(w){if(CL[w])return;CL[w]={loading:1};fetch("data/classement/"+w+".json").then(r=>r.json()).then(j=>{CL[w]=j}).catch(()=>{CL[w]={error:"Connexion impossible."}}).finally(()=>{if((tab==3&&cw==w)||(tab==1&&(rw==w||rw+1==w)))draw()})}
 function equipes(){if(!cw)cw=curWeek();loadCL(cw);const c=CL[cw];
 let h=`<div class="wk"><button ${cw<=1?"disabled":""} onclick="cw--;draw()">◀</button><span>Semaine ${cw}</span><button ${cw>=22?"disabled":""} onclick="cw++;draw()">▶</button></div>`;
 if(c.loading)return h+`<p class="sub">Chargement des classements AFTT…</p>`;
@@ -139,7 +139,7 @@ if(tab==3)h=equipes();
 document.getElementById("m").innerHTML=h}
 
 // Fiche joueur : graphique d'évolution des points + détail des matchs (data.aftt.be).
-function openP(l){sel=l;if(!PF[l]){PF[l]={loading:1};fetch("/api/joueur?licence="+encodeURIComponent(l)).then(r=>r.json()).then(j=>PF[l]=j).catch(()=>PF[l]={error:"Connexion impossible."}).finally(()=>{if(tab==0&&sel==l)draw()})}history.pushState({p:l},"");draw();scrollTo(0,0)}
+function openP(l){sel=l;if(!PF[l]){PF[l]={loading:1};fetch("data/joueur/"+encodeURIComponent(l)+".json").then(r=>r.json()).then(j=>PF[l]=j).catch(()=>PF[l]={error:"Connexion impossible."}).finally(()=>{if(tab==0&&sel==l)draw()})}history.pushState({p:l},"");draw();scrollTo(0,0)}
 function closeP(){if(history.state&&history.state.p)history.back();else{sel="";draw()}}
 addEventListener("popstate",e=>{sel=(e.state&&e.state.p)||"";draw()});
 const f2=n=>n.toLocaleString("fr-BE",{minimumFractionDigits:2,maximumFractionDigits:2});
