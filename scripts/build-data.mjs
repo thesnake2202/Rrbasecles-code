@@ -345,9 +345,11 @@ async function patchIndex() {
       [`semaine N des autres équipes.</p>`, `semaine N des autres équipes.\${upd(c)}</p>`]
     ];
 
-    for (const [a, b] of swaps) {
-        out = out.split(a).join(b);
-    }
+    let out = html;
+
+for (const [a, b] of swaps) {
+  out = out.split(a).join(b);
+}
 
 
   if (out !== html) {
