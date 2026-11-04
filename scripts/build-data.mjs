@@ -348,7 +348,10 @@ async function patchIndex() {
       [`Classement après la semaine ${cw}.</p>`, `Classement après la semaine ${cw}.${upd(c)}</p>`],
 
     ['semaine N des autres équipes.</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
-  for (const [a, b] of swaps) out = out.split(a).join(b);
+  for (const [a, b] of swaps) {
+    out = out.split(a).join(b);
+}
+
   if (out !== html) {
     await writeFile("index.html", out);
     console.log("index.html adapté : il lit maintenant les fichiers du dossier data/.");
