@@ -342,7 +342,13 @@ async function patchIndex() {
       ['"/api/classement?semaine="+w', '"data/classement/"+w+".json"'],
       ['"/api/joueur?licence="+encodeURIComponent(1)', '"data/joueur/"+encodeURIComponent(1)+".json"'],
       [`Classement après la semaine \${cw}.</p>`, `Classement après la semaine \${cw}.\${upd(c)}</p>`],
-      [`semaine N des autres équipes.</p>`, `semaine N des autres équipes.\${upd(c)}</p>`]
+      [`semaine N des autres équipes.</p>`, `semaine N des autres équipes.\${upd(c)}</p>`],
+        ['function curWeek(){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate());', 'function curWeek(x){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+(x?1:0));'],
+    ['function resultats(){if(!rw)rw=curWeek();', 'function tbs(d,m){const me=isMe(m.home)?m.home:m.away,o=nrm(isMe(m.home)?m.away:m.home),w=isVet(d)?rw+1:rw,x=(teams()[tkey(d,me)]||[]).filter(z=>mres(z)&&Math.abs(z.week-w)<=1&&(nrm(z.opp).startsWith(o)||o.startsWith(nrm(z.opp)))).sort((a,b)=>Math.abs(a.week-w)-Math.abs(b.week-w))[0];return x?(x.homeForfeit||x.awayForfeit?"FF":x.score):""}function resultats(){if(!rw)rw=curWeek(1);'],
+    ['s=m.score||"",ff=', 's=m.score||tbs(d,m),ff='],
+    ['fetch(u).then(r=>r.json())', 'fetch(u,{cache:"no-cache"}).then(r=>r.json())'],
+    ['fetch("data/classement/"+w+".json")', 'fetch("data/classement/"+w+".json",{cache:"no-cache"})'],
+    ['semaine N des autres équipes.${upd(c)}</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
     ];
 
     let out = html;
