@@ -14,22 +14,30 @@ jobs:
         run: |
           cat > debug.mjs <<'EOF'
           import fs from "node:fs";
-          const r = await fetch("https://data.aftt.be/interclubs/rankings.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ indice: "H297", semaine: "1" }),
-          });
-          const html = await r.text();
-          let i = html.indexOf("match.php");
-          if (i < 0) i = html.indexOf("eye");
+          const post = async (url, o) =>
+            (await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams(o),
+            })).text();
+          const rk = await post("https://data.aftt.be/interclubs/rankings.php", { indice: "H297", semaine: "1" });
+          const rows = [...rk.matchAll(/<tr>([\s\S]*?)<\/tr>/g)].map((m) => m[1]).filter((r) => /match_id/.test(r));
+          const mine = rows.filter((r) => /Bas[eè]cles/i.test(r));
+          const id = ((mine[0] || rows[0] || "").match(/name="match_id" value="(\d+)"/) || [])[1];
+          const html = await post("https://data.aftt.be/interclubs/match.php", { match_id: id });
+          const clean = html
+            .replace(/<head[\s\S]*?<\/head>/g, "")
+            .replace(/<script[\s\S]*?<\/script>/g, "")
+            .replace(/<style[\s\S]*?<\/style>/g, "")
+            .replace(/>\s+</g, ">\n<");
           fs.mkdirSync("data", { recursive: true });
-          fs.writeFileSync("data/debug-match.txt", i < 0 ? "introuvable (" + html.length + " caracteres)" : html.slice(Math.max(0, i - 1500), i + 1500));
+          fs.writeFileSync("data/debug-match2.txt", "match_id=" + id + "\nlignes_club=" + mine.length + "\n" + clean.slice(0, 30000));
           EOF
           node debug.mjs
       - name: Enregistrer
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/debug-match.txt
-          git commit -m "debug"
+          git add data/debug-match2.txt
+          git commit -m "debug 2"
           git push
