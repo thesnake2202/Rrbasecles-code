@@ -32,7 +32,11 @@ jobs:
         run: node scripts/build-data.mjs
         env:
           IMPORT_FROM: ${{ inputs.import_from }}
-
+          
+      - name: Récupérer les feuilles de match
+        continue-on-error: true
+        run: node scripts/build-feuilles.mjs
+        
       - name: Enregistrer les changements
         if: always()
         run: |
