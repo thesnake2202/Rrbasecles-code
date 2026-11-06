@@ -1,0 +1,388 @@
+match_id=879138
+lignes_club=8
+<!DOCTYPE html>
+<html lang="fr">
+<body>
+<!-- 🔹 Barre de navigation avec connexion -->
+<nav class="navbar navbar-expand-lg fixed-top">
+<div class="container-fluid">
+<a class="navbar-brand" href="index.php">
+<img src="https://data.aftt.be/media/logo/aftt.png" alt="Logo AFTT">
+</a>
+<!-- Bouton burger pour mobile -->
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<i class="fas fa-bars"></i>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav module-navbar" aria-label="Modules principaux">
+<li class="nav-item"><a class="nav-link " href="../ranking/tops.php"><i class="fas fa-ranking-star"></i>Classement</a></li>
+<li class="nav-item"><a class="nav-link active" href="../interclubs/rankings.php"><i class="fas fa-people-group"></i>Interclubs</a></li>
+<li class="nav-item"><a class="nav-link " href="../competitions/palmares.php"><i class="fas fa-trophy"></i>Tournois</a></li>
+<li class="nav-item"><a class="nav-link " href="../annuaire/membres.php"><i class="fas fa-address-book"></i>Annuaire</a></li>
+</ul>
+<ul class="navbar-nav account-navbar">
+<!-- Si l'utilisateur est connecté -->
+<!-- Si l'utilisateur n'est pas connecté -->
+<li class="nav-item visitor-status">
+<i class="fas fa-user-shield"></i> Navigation en mode visiteur                        </li>
+</ul>
+</div>
+</div>
+</nav>
+<!-- 🔹 Bouton pour afficher/masquer le menu sur mobile -->
+<button id="menu-toggle" class="btn btn-primary d-lg-none" style="position: relative; top: 15px; left: 15px; z-index: 1050;">
+<i class="fas fa-bars"></i>
+</button>
+<div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+<div class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<img src="https://data.aftt.be/media/logo/aftt.png" alt="AFTT Logo">
+<h5>DATA</h5>
+</div>
+<!-- 🔹 Sélecteur de langue -->
+<div class="language-selector">
+<a href="/interclubs/match.php?lang=fr" class="active" aria-label="Français">🇫🇷</a>
+<a href="/interclubs/match.php?lang=en" class="" aria-label="English">🇬🇧</a>
+<a href="/interclubs/match.php?lang=nl" class="" aria-label="Nederlands">🇳🇱</a>
+<a href="/interclubs/match.php?lang=de" class="" aria-label="Deutsch">🇩🇪</a>
+</div>
+<!-- 🔹 Accueil ajouté ici -->
+<form method="post" class="sidebar-login" aria-label="Connexion joueur">
+<input type="hidden" name="csrf_token" value="9e1fde0b804aa3dd12e556b264fbd1d63d06b4f06b9921aec4cca092b4c25e87">
+<div class="sidebar-login-title"><i class="fas fa-right-to-bracket"></i> Se connecter</div>
+<label class="visually-hidden" for="sidebar-licence">Licence ou login</label>
+<input class="form-control" id="sidebar-licence" name="licence"  autocomplete="username" placeholder="Licence ou login" required>
+<label class="visually-hidden" for="sidebar-password">Mot de passe</label>
+<input class="form-control" id="sidebar-password" type="password" name="password" autocomplete="current-password" placeholder="Mot de passe" required>
+<button class="btn btn-primary" type="submit" name="sidebar_login" value="1"><i class="fas fa-arrow-right-to-bracket me-1"></i> Connexion</button>
+</form>
+<a class="" href="../tools/index.php">
+<i class="fas fa-home me-2"></i> Accueil        </a>
+<div class="category-title">Interclubs</div>
+<a class="" href="../interclubs/rankings.php"><i class="fas fa-building me-2"></i> Par club</a>
+<a class="" href="../interclubs/rankings_level.php"><i class="fas fa-layer-group me-2"></i> Par niveau</a>
+<a class="" href="../interclubs/rankings_division.php"><i class="fas fa-th-list me-2"></i> Par division</a>
+<a class="" href="../interclubs/interseries.php"><i class="fas fa-ranking-star me-2"></i> Classement inter-series</a>
+</div>
+<div class="content">
+<div class="title-section">
+<i class="fas fa-table-tennis me-2 title-icon"></i>
+<div class="title-text">
+<h2>Feuille de match</h2>
+<p>Détails du match entre <strong>R.R. Basecles A</strong> et <strong>Les Templiers C</strong>.</p>
+</div>
+</div>
+<div class="container match-container mt-4">
+<div class="card">
+<div class="card-header bg-perso text-white">
+<h5><i class="fas fa-info-circle"></i> Détails du match</h5>
+</div>
+<div class="card-body">
+<section class="match-scoreboard">
+<div class="match-team home"><span>Domicile</span><strong>R.R. Basecles A</strong></div>
+<div class="match-score"><span>Score final</span><strong>10-6</strong><small><i class="fas fa-calendar-day"></i> 19/09/2026 <i class="fas fa-clock ms-2"></i> 19:00:00</small></div>
+<div class="match-team away"><span>Extérieur</span><strong>Les Templiers C</strong></div>
+</section>
+<div class="tables-container">
+<div class="table-responsive">
+<h5 class="text-center"><i class="fas fa-house me-2"></i>R.R. Basecles A</h5>
+<table class="table table-striped text-center">
+<thead>
+<tr>
+<th class="ft-smaller">#</th>
+<th class="text-wrap text-start ft-smaller">Nom</th>
+<th>Clt.</th>
+<th>Victoires</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ft-smaller">1</td>
+<td class="text-wrap text-start ft-smaller">JULIEN DRUART</td>
+<td class="ft-smaller">C6</td>
+<td class="ft-smaller">3</td>
+</tr>
+<tr>
+<td class="ft-smaller">2</td>
+<td class="text-wrap text-start ft-smaller">GILDO VIRGILIO</td>
+<td class="ft-smaller">D0</td>
+<td class="ft-smaller">2</td>
+</tr>
+<tr>
+<td class="ft-smaller">3</td>
+<td class="text-wrap text-start ft-smaller">LOUIS SCHOOVAERTS</td>
+<td class="ft-smaller">D0</td>
+<td class="ft-smaller">1</td>
+</tr>
+<tr>
+<td class="ft-smaller">4</td>
+<td class="text-wrap text-start ft-smaller">SEBASTIEN SCHLOSSMACHER</td>
+<td class="ft-smaller">D2</td>
+<td class="ft-smaller">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-responsive mt-4 mt-md-0">
+<h5 class="text-center"><i class="fas fa-bus me-2"></i>Les Templiers C</h5>
+<table class="table table-striped text-center">
+<thead>
+<tr>
+<th class="ft-smaller">#</th>
+<th class="text-wrap text-start ft-smaller">Nom</th>
+<th>Clt.</th>
+<th>Victoires</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ft-smaller">1</td>
+<td class="text-wrap text-start ft-smaller">MARC DETREMMERIE</td>
+<td class="ft-smaller">D0</td>
+<td class="ft-smaller">2</td>
+</tr>
+<tr>
+<td class="ft-smaller">2</td>
+<td class="text-wrap text-start ft-smaller">CLEMENT OVAERE</td>
+<td class="ft-smaller">D2</td>
+<td class="ft-smaller">2</td>
+</tr>
+<tr>
+<td class="ft-smaller">3</td>
+<td class="text-wrap text-start ft-smaller">YVES HAUWEL</td>
+<td class="ft-smaller">D4</td>
+<td class="ft-smaller">1</td>
+</tr>
+<tr>
+<td class="ft-smaller">4</td>
+<td class="text-wrap text-start ft-smaller">THOMAS HEUSSCHEN</td>
+<td class="ft-smaller">D4</td>
+<td class="ft-smaller">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="card shadow-sm mt-4">
+<div class="card-header bg-perso text-white">
+<h5 class="mb-0"><i class="fas fa-table-tennis"></i> Détails des rencontres</h5>
+</div>
+<div class="card-body p-3">
+<div class="table-responsive">
+<table class="table table-sm table-striped text-center align-middle">
+<thead class="custom-dark-header">
+<tr>
+<th class="d-none d-md-table-cell">#</th>
+<th class="d-none d-md-table-cell"><i class="fas fa-house me-1"></i>Joueur Domicile</th><th class="d-md-none"><i class="fas fa-house"></i></th>
+<th class="d-none d-md-table-cell">Score</th><th class="d-md-none">Score</th>
+<th class="d-none d-md-table-cell"><i class="fas fa-bus me-1"></i>Joueur Extérieur</th><th class="d-md-none"><i class="fas fa-bus"></i></th>
+<th class="d-none d-md-table-cell">Sets</th>
+<th class="d-none d-md-table-cell">Évolution</th><th class="d-md-none">+/−</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">1</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="SEBASTIEN SCHLOSSMACHER (D2)">
+                        SEBASTIEN SCHLOSSMACHER (D2)                    </td>
+<td class="fw-bold ft-smaller">3 - 2</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="CLEMENT OVAERE (D2)">
+                        CLEMENT OVAERE (D2)                    </td>
+<td class="small text-muted d-none d-md-table-cell">6-11 / 11-2 / 6-11 / 11-7 / 11-8</td>
+<td class="fw-bold ft-smaller">1 - 0</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">2</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="LOUIS SCHOOVAERTS (D0)">
+                        LOUIS SCHOOVAERTS (D0)                    </td>
+<td class="fw-bold ft-smaller">0 - 3</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="MARC DETREMMERIE (D0)">
+                        MARC DETREMMERIE (D0)                    </td>
+<td class="small text-muted d-none d-md-table-cell">1-11 / 6-11 / 6-11</td>
+<td class="fw-bold ft-smaller">1 - 1</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">3</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="GILDO VIRGILIO (D0)">
+                        GILDO VIRGILIO (D0)                    </td>
+<td class="fw-bold ft-smaller">3 - 0</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="THOMAS HEUSSCHEN (D4)">
+                        THOMAS HEUSSCHEN (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-4 / 11-5 / 11-5</td>
+<td class="fw-bold ft-smaller">2 - 1</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">4</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="JULIEN DRUART (C6)">
+                        JULIEN DRUART (C6)                    </td>
+<td class="fw-bold ft-smaller">3 - 0</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="YVES HAUWEL (D4)">
+                        YVES HAUWEL (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-6 / 18-16 / 11-8</td>
+<td class="fw-bold ft-smaller">3 - 1</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">5</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="SEBASTIEN SCHLOSSMACHER (D2)">
+                        SEBASTIEN SCHLOSSMACHER (D2)                    </td>
+<td class="fw-bold ft-smaller">2 - 3</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="MARC DETREMMERIE (D0)">
+                        MARC DETREMMERIE (D0)                    </td>
+<td class="small text-muted d-none d-md-table-cell">5-11 / 11-5 / 5-11 / 11-6 / 8-11</td>
+<td class="fw-bold ft-smaller">3 - 2</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">6</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="LOUIS SCHOOVAERTS (D0)">
+                        LOUIS SCHOOVAERTS (D0)                    </td>
+<td class="fw-bold ft-smaller">2 - 3</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="CLEMENT OVAERE (D2)">
+                        CLEMENT OVAERE (D2)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-9 / 9-11 / 11-2 / 7-11 / 5-11</td>
+<td class="fw-bold ft-smaller">3 - 3</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">7</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="GILDO VIRGILIO (D0)">
+                        GILDO VIRGILIO (D0)                    </td>
+<td class="fw-bold ft-smaller">3 - 0</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="YVES HAUWEL (D4)">
+                        YVES HAUWEL (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-9 / 11-1 / 11-4</td>
+<td class="fw-bold ft-smaller">4 - 3</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">8</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="JULIEN DRUART (C6)">
+                        JULIEN DRUART (C6)                    </td>
+<td class="fw-bold ft-smaller">3 - 1</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="THOMAS HEUSSCHEN (D4)">
+                        THOMAS HEUSSCHEN (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-9 / 11-6 / 6-11 / 11-8</td>
+<td class="fw-bold ft-smaller">5 - 3</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">9</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="SEBASTIEN SCHLOSSMACHER (D2)">
+                        SEBASTIEN SCHLOSSMACHER (D2)                    </td>
+<td class="fw-bold ft-smaller">3 - 0</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="YVES HAUWEL (D4)">
+                        YVES HAUWEL (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-6 / 11-8 / 11-5</td>
+<td class="fw-bold ft-smaller">6 - 3</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">10</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="LOUIS SCHOOVAERTS (D0)">
+                        LOUIS SCHOOVAERTS (D0)                    </td>
+<td class="fw-bold ft-smaller">3 - 0</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="THOMAS HEUSSCHEN (D4)">
+                        THOMAS HEUSSCHEN (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-4 / 12-10 / 11-7</td>
+<td class="fw-bold ft-smaller">7 - 3</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">11</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="GILDO VIRGILIO (D0)">
+                        GILDO VIRGILIO (D0)                    </td>
+<td class="fw-bold ft-smaller">— - —</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="MARC DETREMMERIE (D0)">
+                        MARC DETREMMERIE (D0)                    </td>
+<td class="small text-muted d-none d-md-table-cell">/</td>
+<td class="fw-bold ft-smaller">8 - 3</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">12</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="JULIEN DRUART (C6)">
+                        JULIEN DRUART (C6)                    </td>
+<td class="fw-bold ft-smaller">3 - 2</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="CLEMENT OVAERE (D2)">
+                        CLEMENT OVAERE (D2)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-9 / 6-11 / 13-11 / 16-18 / 13-11</td>
+<td class="fw-bold ft-smaller">9 - 3</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">13</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="SEBASTIEN SCHLOSSMACHER (D2)">
+                        SEBASTIEN SCHLOSSMACHER (D2)                    </td>
+<td class="fw-bold ft-smaller">2 - 3</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="THOMAS HEUSSCHEN (D4)">
+                        THOMAS HEUSSCHEN (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">11-5 / 3-11 / 11-6 / 7-11 / 6-11</td>
+<td class="fw-bold ft-smaller">9 - 4</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">14</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="LOUIS SCHOOVAERTS (D0)">
+                        LOUIS SCHOOVAERTS (D0)                    </td>
+<td class="fw-bold ft-smaller">0 - 3</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="YVES HAUWEL (D4)">
+                        YVES HAUWEL (D4)                    </td>
+<td class="small text-muted d-none d-md-table-cell">3-11 / 8-11 / 8-11</td>
+<td class="fw-bold ft-smaller">9 - 5</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">15</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="GILDO VIRGILIO (D0)">
+                        GILDO VIRGILIO (D0)                    </td>
+<td class="fw-bold ft-smaller">1 - 3</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="CLEMENT OVAERE (D2)">
+                        CLEMENT OVAERE (D2)                    </td>
+<td class="small text-muted d-none d-md-table-cell">5-11 / 8-11 / 11-7 / 8-11</td>
+<td class="fw-bold ft-smaller">9 - 6</td>
+</tr>
+<tr>
+<td class="ft-smaller d-none d-md-table-cell" style="max-width: 40px;">16</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="JULIEN DRUART (C6)">
+                        JULIEN DRUART (C6)                    </td>
+<td class="fw-bold ft-smaller">— - —</td>
+<td class="text-truncate ft-smaller" style="max-width: 130px;" title="MARC DETREMMERIE (D0)">
+                        MARC DETREMMERIE (D0)                    </td>
+<td class="small text-muted d-none d-md-table-cell">/</td>
+<td class="fw-bold ft-smaller">10 - 6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Commentaires -->
+<div class="card shadow-sm mt-4">
+<div class="card-header bg-secondary text-white">
+<h5 class="mb-0"><i class="fas fa-comments"></i> Commentaires</h5>
+</div>
+<div class="card-body p-2">
+<ul class="list-group list-group-flush">
+<li class="list-group-item small">
+<strong>MATHIEU JASINSKI</strong>
+<span class="text-muted">(19/09/2026 22:36)</span>
+<br>
+                        Modification des résultats détaillés                    </li>
+<li class="list-group-item small">
+<strong>MATHIEU JASINSKI</strong>
+<span class="text-muted">(19/09/2026 22:36)</span>
+<br>
+                        Modification des résultats détaillés                    </li>
+<li class="list-group-item small">
+<strong>MATHIEU JASINSKI</strong>
+<span class="text-muted">(19/09/2026 22:35)</span>
+<br>
+                        Validation du résultat                    </li>
+<li class="list-group-item small">
+<strong>MATHIEU JASINSKI</strong>
+<span class="text-muted">(19/09/2026 22:35)</span>
+<br>
+                        Création des résultats détaillés                    </li>
+</ul>
+</div>
+</div>
+<footer class="site-footer">
+<span>&copy; 2026 <strong>Mathieu Jasinski</strong>. Tous droits réservés.</span>
+<span class="site-footer-mark"><i class="fas fa-chart-line"></i> AFTT · Classement numérique</span>
+</footer>
+</div>
+</body>
+</html>
