@@ -343,12 +343,14 @@ async function patchIndex() {
       ['"/api/joueur?licence="+encodeURIComponent(1)', '"data/joueur/"+encodeURIComponent(1)+".json"'],
       [`Classement après la semaine \${cw}.</p>`, `Classement après la semaine \${cw}.\${upd(c)}</p>`],
       [`semaine N des autres équipes.</p>`, `semaine N des autres équipes.\${upd(c)}</p>`],
-        ['function curWeek(){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate());', 'function curWeek(x){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+(x?1:0));'],
-    ['function resultats(){if(!rw)rw=curWeek();', 'function tbs(d,m){const me=isMe(m.home)?m.home:m.away,o=nrm(isMe(m.home)?m.away:m.home),w=isVet(d)?rw+1:rw,x=(teams()[tkey(d,me)]||[]).filter(z=>mres(z)&&Math.abs(z.week-w)<=1&&(nrm(z.opp).startsWith(o)||o.startsWith(nrm(z.opp)))).sort((a,b)=>Math.abs(a.week-w)-Math.abs(b.week-w))[0];return x?(x.homeForfeit||x.awayForfeit?"FF":x.score):""}function resultats(){if(!rw)rw=curWeek(1);'],
-    ['s=m.score||"",ff=', 's=m.score||tbs(d,m),ff='],
-    ['fetch(u).then(r=>r.json())', 'fetch(u,{cache:"no-cache"}).then(r=>r.json())'],
-    ['fetch("data/classement/"+w+".json")', 'fetch("data/classement/"+w+".json",{cache:"no-cache"})'],
-    ['semaine N des autres équipes.${upd(c)}</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
+      ['function curWeek(){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate());', 'function curWeek(x){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+(x?1:0));'],
+      ['function resultats(){if(!rw)rw=curWeek();', 'function tbs(d,m){const me=isMe(m.home)?m.home:m.away,o=nrm(isMe(m.home)?m.away:m.home),w=isVet(d)?rw+1:rw,x=(teams()[tkey(d,me)]||[]).filter(z=>mres(z)&&Math.abs(z.week-w)<=1&&(nrm(z.opp).startsWith(o)||o.startsWith(nrm(z.opp)))).sort((a,b)=>Math.abs(a.week-w)-Math.abs(b.week-w))[0];return x?(x.homeForfeit||x.awayForfeit?"FF":x.score):""}function resultats(){if(!rw)rw=curWeek(1);'],
+      ['s=m.score||"",ff=', 's=m.score||tbs(d,m),ff='],
+      ['fetch(u).then(r=>r.json())', 'fetch(u,{cache:"no-cache"}).then(r=>r.json())'],
+      ['fetch("data/classement/"+w+".json")', 'fetch("data/classement/"+w+".json",{cache:"no-cache"})'],
+      ['semaine N des autres équipes.${upd(c)}</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
+      ['function resultats(){if(!rw)rw=curWeek(1);', 'let rw0=0,rwA=0;function adv(){if(rwA||rw!=rw0||rw>20)return;loadCL(rw+2);const c=CL[rw+2];if(c.loading)return;rwA=1;if(c.divisions&&c.divisions.some(d=>isVet(d)&&d.matches.some(m=>(isMe(m.home)||isMe(m.away))&&/[0-9] *- *[0-9]|ff|forfait/i.test(m.score||""))))rw++}function resultats(){if(!rw){rw=curWeek(1);rw0=rw}adv();'],
+      ['(tab==1&&(rw==w||rw+1==w))', '(tab==1&&(rw==w||rw+1==w||rw+2==w))'],
     ];
 
     let out = html;
