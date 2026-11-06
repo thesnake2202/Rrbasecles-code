@@ -1,0 +1,51 @@
+text-wrap text-start">Royal TTC Allain D (fg)</td>
+                                    <td>0</td>
+                                    <td class="d-none d-md-table-cell">0</td>
+                                    <td class="d-none d-md-table-cell">0</td>
+                                    <td class="d-none d-md-table-cell">0</td>
+                                    <td>0</td>
+                                    <td><strong>0</strong></td>
+                                </tr>
+                                                    </tbody>
+                    </table>
+                </div>
+
+                                    <div class="card-footer p-2">
+    <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle text-center">
+            <thead class="custom-dark-header text-white">
+                <tr>
+                    <th class="text-start ps-2">Domicile</th>
+                    <th class="d-sm-table-cell">Score</th>
+                    <th class="text-end pe-2">Extérieur</th>
+                    <th class="d-none d-md-table-cell">🔎</th> <!-- Caché en mobile -->
+                </tr>
+            </thead>
+            <tbody>
+                                <tr>
+                    <td class="text-start ps-2 ">Palette Huissignies B</td>
+                    <td class="fw-bold">
+                        6-10                        <!-- Bouton visible seulement en mobile -->
+                                                    <form action="match.php" method="POST" target="_blank" class="d-md-none mt-1">
+                                <input type="hidden" name="match_id" value="879418">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </form>
+                                            </td>
+                    <td class="text-end pe-2 fw-bold text-success">Bon-Secours E</td>
+                    <td class="d-none d-md-table-cell">
+                                                <form action="match.php" method="POST" target="_blank">
+                            <input type="hidden" name="match_id" value="879418">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </form>
+                                            </td>
+                </tr>
+                                <tr>
+                    <td class="text-start ps-2 ">Saint-Piat D</td>
+                    <td class="fw-bold">
+                        8-8                        <!-- Bouton visible seulement en mobile -->
+                                                    <form action="match.php" method="POST" target="_blank" class="d-md-none mt-1">
+                                <input type="hidden" name="match_id" val
