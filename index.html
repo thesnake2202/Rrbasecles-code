@@ -71,7 +71,7 @@ const CL={};let cw=0,cd=0,rw=0,cw0=0,cwA=0;
 const isMe=t=>/Basecles|Basècles/i.test(t);
 const short=t=>t.replace(/^Division\s*/,"").replace(/\s*-\s*Prov\. Hainaut\s*-\s*/," · ");
 function curWeek(x){const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+(x?1:0));const k=D.filter(d=>{const[a,b]=d.split("/").map(Number);return new Date(b>=9?2026:2027,b-1,a)<t}).length;return Math.min(22,Math.max(1,k))}
-function loadCL(w){if(CL[w])return;CL[w]={loading:1};fetch("data/classement/"+w+".json",{cache:"no-cache"}).then(r=>r.json()).then(j=>{CL[w]=j}).catch(()=>{CL[w]={error:"Connexion impossible."}}).finally(()=>{if((tab==3&&(cw==w||cw+1==w||cw+2==w)||(tab==1&&(rw==w||rw+1==w||rw+2==w)))draw()})}
+function loadCL(w){if(CL[w])return;CL[w]={loading:1};fetch("data/classement/"+w+".json",{cache:"no-cache"}).then(r=>r.json()).then(j=>{CL[w]=j}).catch(()=>{CL[w]={error:"Connexion impossible."}}).finally(()=>{if((tab==3&&(cw==w||cw+1==w||cw+2==w))||(tab==1&&(rw==w||rw+1==w||rw+2==w)))draw()})}
 function equipes(){if(!cw){cw=curWeek();cw0=cw}advE();if(cwA&&cw0<cw)cw0=cw; loadCL(cw);if(cw<22)loadCL(cw+1);const c=CL[cw],v=CL[cw+1];
 let h=`<div class="wk"><button ${cw<=1?"disabled":""} onclick="cw--;draw()">◀</button><span>Semaine ${cw}</span><button ${cw>=22?"disabled":""} onclick="cw++;draw()">▶</button></div>`;
 if(c.loading||(cw<22&&v?.loading))return h+`<p class="sub">Chargement des classements AFTT…</p>`;
