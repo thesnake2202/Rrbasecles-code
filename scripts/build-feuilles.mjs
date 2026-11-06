@@ -120,7 +120,13 @@ for (const o of ours.values()) {
   // Les anciennes feuilles déjà enregistrées ne sont pas relues.
   if (index[o.id] && index[o.id].score === o.score && o.week < maxWeek - 1) continue;
   try {
-    const f = parseFeuille(await post(`${BASE}/interclubs/match.php`, { match_id: o.id }));
+    const html = await post(`${BASE}/interclubs/match.php`, { match_id: o.id });
+
+if (o.id === "897468") {
+  console.log("DIAGNOSTIC PAPIGNIES :", html);
+}
+
+const f = parseFeuille(html);
     if (!f.rows.length) throw new Error("feuille vide");
     await save(`data/feuilles/${o.id}.json`, { id: o.id, ...f });
     index[o.id] = { id: o.id, week: o.week, home: f.home, away: f.away, score: o.score, date: f.date, division: o.title };
