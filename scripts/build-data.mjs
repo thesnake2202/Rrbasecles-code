@@ -350,7 +350,8 @@ async function patchIndex() {
       ['fetch("data/classement/"+w+".json")', 'fetch("data/classement/"+w+".json",{cache:"no-cache"})'],
       ['semaine N des autres équipes.${upd(c)}</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
       ['function resultats(){if(!rw)rw=curWeek(1);', 'let rw0=0,rwA=0;function adv(){if(rwA||rw!=rw0||rw>20)return;loadCL(rw+2);const c=CL[rw+2];if(c.loading)return;rwA=1;if(c.divisions&&c.divisions.some(d=>isVet(d)&&d.matches.some(m=>(isMe(m.home)||isMe(m.away))&&/[0-9] *- *[0-9]|ff|forfait/i.test(m.score||""))))rw++}function resultats(){if(!rw){rw=curWeek(1);rw0=rw}adv();'],
-      ['(tab==1&&(rw==w||rw+1==w))', '(tab==1&&(rw==w||rw+1==w||rw+2==w))'],
+      ['(tab==1&&(rw==w||rw+1==w))', '(tab==1&&(rw==w||rw+1==w||rw+2==w))'],   
+      ['semaine N des autres équipes.${upd(c)}</p>', 'semaine N des autres équipes.${upd(CL[rw])}</p>'],
     ];
 
     let out = html;
