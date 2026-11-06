@@ -1,0 +1,35 @@
+name: Debug match
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Extrait
+        run: |
+          cat > debug.mjs <<'EOF'
+          import fs from "node:fs";
+          const r = await fetch("https://data.aftt.be/interclubs/rankings.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ indice: "H297", semaine: "1" }),
+          });
+          const html = await r.text();
+          let i = html.indexOf("match.php");
+          if (i < 0) i = html.indexOf("eye");
+          fs.mkdirSync("data", { recursive: true });
+          fs.writeFileSync("data/debug-match.txt", i < 0 ? "introuvable (" + html.length + " caracteres)" : html.slice(Math.max(0, i - 1500), i + 1500));
+          EOF
+          node debug.mjs
+      - name: Enregistrer
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/debug-match.txt
+          git commit -m "debug"
+          git push
