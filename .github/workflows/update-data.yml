@@ -2,7 +2,7 @@ name: Mise à jour des données
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "17 * * * *"
 
   workflow_dispatch:
     inputs:
@@ -41,6 +41,6 @@ jobs:
           git add data index.html
           if ! git diff --staged --quiet; then
             git commit -m "Mise à jour automatique des données"
-            git pull --rebase
+            git pull --rebase -X theirs
             git push
           fi
