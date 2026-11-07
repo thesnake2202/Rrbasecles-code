@@ -25,7 +25,10 @@ nav button.on{background:var(--red);color:#fff}
 .ov{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-bottom:12px}.ov button{text-align:left;padding:10px;border-radius:8px;border:1px solid transparent;background:var(--card);color:var(--tx);font:inherit}.ov button.on{border-color:var(--red)}.ov b{display:block}.ov .big{font-size:22px;font-weight:800;color:var(--gold)}
 table.cl{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;font-size:14px}.cl th{background:var(--red);color:#fff;padding:8px 4px;font-size:12px}.cl td{padding:8px 4px;text-align:center;border-top:1px solid var(--alt)}.cl td.t{text-align:left}.cl tr.me td{background:rgba(176,16,16,.22);font-weight:700}.cl td.p{color:var(--gold);font-weight:800}
 .mt{display:flex;gap:8px;padding:8px 10px;background:var(--card);border-radius:8px;margin-bottom:4px;font-size:14px}.mt span{flex:1}.mt span:last-child{text-align:right}.mt b{color:var(--gold);min-width:70px;text-align:center}
-@media (max-width:420px){.cl .x{display:none}}
+@media (max-width:600px){
+  main{overflow-x:auto}
+  table.cl{min-width:480px}
+}
 .rh{text-align:center;margin:8px 0 12px}.rh h2{margin:0;font-size:46px;font-style:italic;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,var(--tx) 45%,#ff9e9e);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rh .wk{justify-content:center;margin:4px 0 0}.rh .wk span{flex:0 1 auto;min-width:170px;color:var(--gold);font-size:20px;font-weight:800}.rh .wk span .sub{display:block;font-size:12px}
 table.rt{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed;font-size:15px;margin:0 -3px;width:calc(100% + 6px)}
